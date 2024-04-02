@@ -1,6 +1,7 @@
 package com.highschool.ourbaby.article.persistence.entity
 
 import com.highschool.ourbaby.article.dto.ArticleResponseDto
+import com.highschool.ourbaby.core.persistence.entity.BaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -8,7 +9,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 
 @Entity
-class ArticleEntity(
+class ArticleEntity (
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	val id: Long? = null,
 	@Column(nullable = false, length = 50)
@@ -25,7 +26,7 @@ class ArticleEntity(
 	var linkHits: Int = 0,
 	@Column(name = "is_published")
 	var isPublished: Boolean = false,
-) {
+) : BaseEntity() {
 	fun toDto(): ArticleResponseDto {
 		return ArticleResponseDto(
 			id = this.id,

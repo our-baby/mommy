@@ -15,15 +15,13 @@ class ArticleService(private val articleRepository: ArticleRepository) {
 		return articleRepository.findById(id).get()
 	}
 
-	fun createArticle(body: ArticleRequestDto): ArticleEntity {
-		val newArticle = body.toEntity()
-		return articleRepository.save(newArticle)
+	fun createArticle(body: ArticleEntity): ArticleEntity {
+		return articleRepository.save(body)
 	}
 
-	fun updateArticle(id: Long, body: ArticleRequestDto): ArticleEntity {
+	fun updateArticle(id: Long, body: ArticleEntity): ArticleEntity {
 		val article = getArticleById(id)
-		val incomingArticle = body.toEntity()
-		val updatedArticle = updateArticleProperties(article, incomingArticle)
+		val updatedArticle = updateArticleProperties(article, body)
 		return articleRepository.save(updatedArticle)
 	}
 
