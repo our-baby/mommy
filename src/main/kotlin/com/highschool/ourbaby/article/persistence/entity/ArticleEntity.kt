@@ -37,6 +37,8 @@ class ArticleEntity (
 			hits = this.hits,
 			linkHits = this.linkHits,
 			isPublished = this.isPublished,
+			createdAt = this.createdAt,
+			updatedAt = this.updatedAt,
 		)
 	}
 }
