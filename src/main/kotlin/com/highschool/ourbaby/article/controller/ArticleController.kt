@@ -1,7 +1,6 @@
 package com.highschool.ourbaby.article.controller
 
 import com.highschool.ourbaby.article.dto.ArticleRequestDto
-import com.highschool.ourbaby.article.dto.ArticleResponseDto
 import com.highschool.ourbaby.article.service.ArticleService
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -39,5 +38,4 @@ class ArticleController(private val articleService: ArticleService) {
 
 	@DeleteMapping("/{id}")
 	fun deleteArticle(@PathVariable(value = "id", required = true) id: Long) = articleService.deleteArticle(id).toDto()
-
 }

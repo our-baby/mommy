@@ -5,20 +5,21 @@ import com.highschool.ourbaby.core.persistence.entity.BaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
+import jakarta.persistence.GenerationType.IDENTITY
 import jakarta.persistence.Id
 
 @Entity
-class ArticleEntity (
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	val id: Long? = null,
+class ArticleEntity(
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	val id: Long,
 	@Column(nullable = false, length = 50)
 	var title: String,
 	@Column(columnDefinition = "TEXT")
 	var summary: String,
 	@Column(nullable = false, columnDefinition = "TEXT")
 	var link: String,
-	@Column(name="menu_tag", nullable = false, length = 10)
+	@Column(name = "menu_tag", nullable = false, length = 10)
 	var menuTag: String,
 	@Column(nullable = false)
 	var hits: Int = 0,

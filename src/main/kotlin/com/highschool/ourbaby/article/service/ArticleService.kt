@@ -1,6 +1,5 @@
 package com.highschool.ourbaby.article.service
 
-import com.highschool.ourbaby.article.dto.ArticleRequestDto
 import com.highschool.ourbaby.article.persistence.entity.ArticleEntity
 import com.highschool.ourbaby.article.persistence.repository.ArticleRepository
 import org.springframework.stereotype.Service
