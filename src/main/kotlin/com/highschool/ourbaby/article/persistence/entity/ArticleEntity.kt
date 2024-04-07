@@ -28,18 +28,16 @@ class ArticleEntity(
 	@Column(name = "is_published")
 	var isPublished: Boolean = false,
 ) : BaseEntity() {
-	fun toDto(): ArticleResponseDto {
-		return ArticleResponseDto(
-			id = this.id,
-			title = this.title,
-			summary = this.summary,
-			link = this.link,
-			menuTag = this.menuTag,
-			hits = this.hits,
-			linkHits = this.linkHits,
-			isPublished = this.isPublished,
-			createdAt = this.createdAt,
-			updatedAt = this.updatedAt,
-		)
-	}
+	fun toDto() = ArticleResponseDto(
+		id = this.id,
+		title = this.title,
+		summary = this.summary,
+		link = this.link,
+		menuTag = this.menuTag,
+		hits = this.hits,
+		linkHits = this.linkHits,
+		isPublished = this.isPublished,
+		createdAt = this.createdAt,
+		updatedAt = this.updatedAt,
+	)
 }
