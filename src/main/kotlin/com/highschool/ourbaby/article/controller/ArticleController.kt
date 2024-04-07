@@ -16,31 +16,28 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/articles")
 class ArticleController(private val articleService: ArticleService) {
 
-	@GetMapping("")
-	fun getAllArticles(): List<ArticleResponseDto> {
-		return articleService.getAllArticles().map { it -> it.toDto() }
-	}
+	@GetMapping
+	fun getAllArticles() = articleService.getAllArticles().map { it -> it.toDto() }
+
 
 	@GetMapping("/{id}")
-	fun getArticleById(@PathVariable(value = "id", required = true) id: Long): ArticleResponseDto {
-		return articleService.getArticleById(id).toDto()
-	}
+	fun getArticleById(@PathVariable(value = "id", required = true) id: Long) =
+		articleService.getArticleById(id).toDto()
 
-	@PostMapping("")
-	fun createArticle(@RequestBody body: ArticleRequestDto): ArticleResponseDto {
-		return articleService.createArticle(body.toEntity()).toDto()
-	}
+
+	@PostMapping
+	fun createArticle(@RequestBody articleRequestDto: ArticleRequestDto) =
+		articleService.createArticle(articleRequestDto.toEntity()).toDto()
+
 
 	@PutMapping("/{id}")
 	fun updateArticle(
 		@PathVariable(value = "id", required = true) id: Long,
-		@RequestBody body: ArticleRequestDto
-	): ArticleResponseDto {
-		return articleService.updateArticle(id, body.toEntity()).toDto()
-	}
+		@RequestBody articleRequestDto: ArticleRequestDto
+	) = articleService.updateArticle(id, articleRequestDto.toEntity()).toDto()
+
 
 	@DeleteMapping("/{id}")
-	fun deleteArticle(@PathVariable(value = "id", required = true) id: Long): ArticleResponseDto {
-		return articleService.deleteArticle(id).toDto()
-	}
+	fun deleteArticle(@PathVariable(value = "id", required = true) id: Long) = articleService.deleteArticle(id).toDto()
+
 }

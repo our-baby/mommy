@@ -4,20 +4,16 @@ import com.highschool.ourbaby.article.dto.ArticleRequestDto
 import com.highschool.ourbaby.article.persistence.entity.ArticleEntity
 import com.highschool.ourbaby.article.persistence.repository.ArticleRepository
 import org.springframework.stereotype.Service
+import kotlin.jvm.optionals.getOrNull
 
 @Service
 class ArticleService(private val articleRepository: ArticleRepository) {
-	fun getAllArticles(): List<ArticleEntity> {
-		return articleRepository.findAll()
-	}
+	fun getAllArticles(): List<ArticleEntity> = articleRepository.findAll()
 
-	fun getArticleById(id: Long): ArticleEntity {
-		return articleRepository.findById(id).get()
-	}
+	fun getArticleById(id: Long): ArticleEntity =
+		articleRepository.findById(id).getOrNull() ?: throw NoSuchElementException("No Article with id $id")
 
-	fun createArticle(body: ArticleEntity): ArticleEntity {
-		return articleRepository.save(body)
-	}
+	fun createArticle(body: ArticleEntity): ArticleEntity = articleRepository.save(body)
 
 	fun updateArticle(id: Long, body: ArticleEntity): ArticleEntity {
 		val article = getArticleById(id)
