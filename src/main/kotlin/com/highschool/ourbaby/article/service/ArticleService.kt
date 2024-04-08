@@ -9,10 +9,10 @@ import kotlin.jvm.optionals.getOrNull
 class ArticleService(private val articleRepository: ArticleRepository) {
 	fun getAllArticles(): List<ArticleEntity> = articleRepository.findAll()
 
-	fun getArticleById(id: Long): ArticleEntity =
+	fun getArticleById(id: Long) =
 		articleRepository.findById(id).getOrNull() ?: throw NoSuchElementException("No Article with id $id")
 
-	fun createArticle(body: ArticleEntity): ArticleEntity = articleRepository.save(body)
+	fun createArticle(body: ArticleEntity) = articleRepository.save(body)
 
 	fun updateArticle(id: Long, body: ArticleEntity): ArticleEntity {
 		val article = getArticleById(id)
