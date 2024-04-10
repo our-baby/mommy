@@ -12,11 +12,11 @@ class ArticleService(private val articleRepository: ArticleRepository) {
 	fun getArticleById(id: Long) =
 		articleRepository.findById(id).getOrNull() ?: throw NoSuchElementException("No Article with id $id")
 
-	fun createArticle(body: ArticleEntity) = articleRepository.save(body)
+	fun createArticle(incomingArticle: ArticleEntity) = articleRepository.save(incomingArticle)
 
-	fun updateArticle(id: Long, body: ArticleEntity): ArticleEntity {
+	fun updateArticle(id: Long, incomingArticle: ArticleEntity): ArticleEntity {
 		val article = getArticleById(id)
-		val updatedArticle = updateArticleProperties(article, body)
+		val updatedArticle = updateArticleProperties(article, incomingArticle)
 		return articleRepository.save(updatedArticle)
 	}
 

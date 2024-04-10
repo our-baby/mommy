@@ -10,12 +10,12 @@ import java.time.LocalDateTime
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
-class BaseEntity {
+open class BaseEntity {
 	@Column(name = "created_at", updatable = false, columnDefinition = "DATETIME", nullable = false)
 	@CreatedDate
-	var createdAt: LocalDateTime = LocalDateTime.now()
+	open var createdAt: LocalDateTime = LocalDateTime.now()
 
 	@LastModifiedDate
 	@Column(name = "updated_at", columnDefinition = "DATETIME")
-	var updatedAt: LocalDateTime? = null
+	open var updatedAt: LocalDateTime? = null
 }
