@@ -24,7 +24,7 @@ import org.springframework.test.context.ContextConfiguration
 //@Transactional(propagation = NOT_SUPPORTED) // flush
 class ArticleServiceSpec(
 	private val articleRepository: ArticleRepository
-): ExpectSpec() {
+) : ExpectSpec() {
 	private val articleService = ArticleService(articleRepository)
 
 	init {
@@ -74,9 +74,7 @@ class ArticleServiceSpec(
 		}
 	}
 
-	fun createNewArticle(article: ArticleEntity): ArticleEntity {
-		return articleService.createArticle(article)
-	}
+	fun createNewArticle(article: ArticleEntity) = articleService.createArticle(article)
 
 	fun validate(from: ArticleEntity, to: ArticleEntity) {
 		from.title shouldBe to.title

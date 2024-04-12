@@ -12,16 +12,15 @@ data class ArticleRequestDto(
 	val linkHits: Int,
 	val isPublished: Boolean,
 ) {
-	fun toEntity(): ArticleEntity {
-		return ArticleEntity(
-			id = this.id,
-			title = this.title,
-			summary = this.summary,
-			link = this.link,
-			menuTag = this.menuTag,
-			hits = this.hits,
-			linkHits = this.linkHits,
-			isPublished = this.isPublished,
-		)
-	}
+	fun toEntity() = ArticleEntity(
+		id = this.id,
+		title = this.title,
+		summary = this.summary,
+		link = this.link,
+		menuTag = this.menuTag,
+		hits = this.hits,
+		linkHits = this.linkHits,
+		isPublished = this.isPublished,
+	)
+
 }
