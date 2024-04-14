@@ -20,7 +20,6 @@ import org.springframework.test.context.ContextConfiguration
 @DataJpaTest
 @ContextConfiguration(classes = [SpringDataConfig::class])
 @AutoConfigureTestDatabase(replace = NONE)
-@EntityListeners(AuditingEntityListener::class)
 class TagServiceSpec(private val tagRepository: TagRepository): ExpectSpec() {
 	private val tagService = TagService(tagRepository)
 

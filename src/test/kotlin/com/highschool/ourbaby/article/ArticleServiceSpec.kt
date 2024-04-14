@@ -20,8 +20,6 @@ import org.springframework.test.context.ContextConfiguration
 @DataJpaTest
 @ContextConfiguration(classes = [SpringDataConfig::class])
 @AutoConfigureTestDatabase(replace = NONE)
-@EntityListeners(AuditingEntityListener::class)
-//@Transactional(propagation = NOT_SUPPORTED) // flush
 class ArticleServiceSpec(
 	private val articleRepository: ArticleRepository
 ) : ExpectSpec() {

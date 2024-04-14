@@ -24,9 +24,9 @@ class TagController(private val tagService: TagService) {
 	fun createTag(@RequestBody tagRequestDto: TagRequestDto) = tagService.createTag(tagRequestDto.toEntity()).toDto()
 
 	@PutMapping("/{id}")
-	fun updateTag(@PathVariable(name = "id", required = true) id: Long, @RequestBody tagRequestDto: TagRequestDto) =
+	fun updateTag(@PathVariable id: Long, @RequestBody tagRequestDto: TagRequestDto) =
 		tagService.updateTag(id, tagRequestDto.toEntity()).toDto()
 
 	@DeleteMapping("/{id}")
-	fun deleteTag(@PathVariable(name = "id", required = true) id: Long) = tagService.deleteTag(id).toDto()
+	fun deleteTag(@PathVariable id: Long) = tagService.deleteTag(id).toDto()
 }
