@@ -11,6 +11,7 @@ data class ArticleResponseDto(
 	val hits: Int,
 	val linkHits: Int,
 	val isPublished: Boolean,
+	val tags: List<String>,
 	val createdAt: LocalDateTime,
 	val updatedAt: LocalDateTime?,
 )

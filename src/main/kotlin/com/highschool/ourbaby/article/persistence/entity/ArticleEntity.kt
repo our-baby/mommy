@@ -1,17 +1,22 @@
 package com.highschool.ourbaby.article.persistence.entity
 
 import com.highschool.ourbaby.article.dto.ArticleResponseDto
+import com.highschool.ourbaby.articleTag.persistence.entity.ArticleTagEntity
 import com.highschool.ourbaby.core.persistence.entity.BaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType.IDENTITY
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
+import jakarta.persistence.Table
 
 @Entity
+@Table(name = "article")
 class ArticleEntity(
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "article_id")
 	val id: Long,
 	@Column(nullable = false, length = 50)
 	var title: String,
@@ -27,6 +32,8 @@ class ArticleEntity(
 	var linkHits: Int = 0,
 	@Column(name = "is_published")
 	var isPublished: Boolean = false,
+	@OneToMany(mappedBy = "article")
+	var articleTags: List<ArticleTagEntity> = ArrayList<ArticleTagEntity>(),
 ) : BaseEntity() {
 	fun toDto() = ArticleResponseDto(
 		id = this.id,
@@ -37,6 +44,7 @@ class ArticleEntity(
 		hits = this.hits,
 		linkHits = this.linkHits,
 		isPublished = this.isPublished,
+		tags = articleTags.map { it -> it.tag.name },
 		createdAt = this.createdAt,
 		updatedAt = this.updatedAt,
 	)
