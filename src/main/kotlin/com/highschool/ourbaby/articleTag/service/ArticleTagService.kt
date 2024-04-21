@@ -21,4 +21,10 @@ class ArticleTagService(
 		val tag = tagService.getTagById(tagId)
 		return articleTagRepository.save(ArticleTagEntity(id = id, article = article, tag = tag))
 	}
+
+	fun deleteArticleTag(articleId: Long, tagId: Long): ArticleTagEntity {
+		val articleTag = articleTagRepository.findByArticle_IdAndTag_Id(articleId, tagId)
+		articleTagRepository.deleteByArticle_IdAndTag_Id(articleId, tagId)
+		return articleTag
+	}
 }

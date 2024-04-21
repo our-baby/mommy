@@ -23,6 +23,8 @@ class ArticleController(private val articleService: ArticleService) {
 	fun getArticleById(@PathVariable(value = "id", required = true) id: Long) =
 		articleService.getArticleById(id).toDto()
 
+	@GetMapping("/tags/{id}")
+	fun getTagsByArticle(@PathVariable id: Long) = articleService.getTagsByArticle(id).map { it -> it.toDto() }
 
 	@PostMapping
 	fun createArticle(@RequestBody articleRequestDto: ArticleRequestDto) =

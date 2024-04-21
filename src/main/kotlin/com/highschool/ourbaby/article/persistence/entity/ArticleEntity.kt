@@ -44,7 +44,6 @@ class ArticleEntity(
 		hits = this.hits,
 		linkHits = this.linkHits,
 		isPublished = this.isPublished,
-		tags = articleTags.map { it -> it.tag.name },
 		createdAt = this.createdAt,
 		updatedAt = this.updatedAt,
 	)

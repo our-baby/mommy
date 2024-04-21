@@ -13,6 +13,8 @@ class TagService(private val tagRepository: TagRepository) {
 	fun getTagById(id: Long) =
 		tagRepository.findById(id).getOrNull() ?: throw NoSuchElementException("No Tag with id $id")
 
+	fun getArticlesByTag(id: Long) = getTagById(id).articleTags.map { it -> it.article }
+
 	fun createTag(incomingTag: TagEntity) = tagRepository.save(incomingTag)
 
 	fun updateTag(id: Long, incomingTag: TagEntity): TagEntity {

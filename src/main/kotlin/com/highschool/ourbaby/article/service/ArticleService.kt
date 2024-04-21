@@ -12,6 +12,8 @@ class ArticleService(private val articleRepository: ArticleRepository) {
 	fun getArticleById(id: Long) =
 		articleRepository.findById(id).getOrNull() ?: throw NoSuchElementException("No Article with id $id")
 
+	fun getTagsByArticle(id: Long) = getArticleById(id).articleTags.map { it -> it.tag }
+
 	fun createArticle(incomingArticle: ArticleEntity) = articleRepository.save(incomingArticle)
 
 	fun updateArticle(id: Long, incomingArticle: ArticleEntity): ArticleEntity {

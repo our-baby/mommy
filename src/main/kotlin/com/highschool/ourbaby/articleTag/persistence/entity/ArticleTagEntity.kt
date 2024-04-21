@@ -17,11 +17,11 @@ class ArticleTagEntity (
 
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "article_id")
-	val article: ArticleEntity,
+	var article: ArticleEntity,
 
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "tag_id")
-	val tag: TagEntity,
+	var tag: TagEntity,
 ): BaseEntity() {
 	fun toDto() = ArticleTagResponseDto(
 		id = this.id,
@@ -30,4 +30,9 @@ class ArticleTagEntity (
 		createdAt = this.createdAt,
 		updatedAt = this.updatedAt,
 	)
+
+	fun update(article: ArticleEntity, tag: TagEntity) {
+		this.article = article
+		this.tag = tag
+	}
 }

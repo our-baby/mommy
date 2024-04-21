@@ -26,7 +26,6 @@ class TagEntity(
 	fun toDto() = TagResponseDto(
 		id = this.id,
 		name = this.name,
-		articles = this.articleTags.map { it -> it.article.toDto() },
 		createdAt = this.createdAt,
 		updatedAt = this.updatedAt,
 	)

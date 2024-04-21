@@ -20,6 +20,9 @@ class TagController(private val tagService: TagService) {
 	@GetMapping("/{id}")
 	fun getTagById(@PathVariable(name = "id", required = true) id: Long) = tagService.getTagById(id).toDto()
 
+	@GetMapping("/articles/{id}")
+	fun getArticlesByTag(@PathVariable id: Long) = tagService.getArticlesByTag(id).map { it -> it.toDto() }
+
 	@PostMapping
 	fun createTag(@RequestBody tagRequestDto: TagRequestDto) = tagService.createTag(tagRequestDto.toEntity()).toDto()
 
