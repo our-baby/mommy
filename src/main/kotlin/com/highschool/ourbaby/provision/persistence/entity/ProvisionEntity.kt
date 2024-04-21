@@ -24,4 +24,8 @@ class ProvisionEntity(
 		createdAt = this.createdAt,
 		updatedAt = this.updatedAt,
 	)
+
+	fun update(incoming: ProvisionEntity) {
+		this.description = incoming.description
+	}
 }

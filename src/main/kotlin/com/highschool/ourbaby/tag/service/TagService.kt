@@ -3,6 +3,7 @@ package com.highschool.ourbaby.tag.service
 import com.highschool.ourbaby.tag.persistence.entity.TagEntity
 import com.highschool.ourbaby.tag.persistence.repository.TagRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.optionals.getOrNull
 
 @Service
@@ -15,10 +16,11 @@ class TagService(private val tagRepository: TagRepository) {
 
 	fun createTag(incomingTag: TagEntity) = tagRepository.save(incomingTag)
 
-	fun updateTag(id: Long, incomingTag: TagEntity): TagEntity {
-		val originalTag = getTagById(id)
-		val updatedTag = updateTagProperties(originalTag, incomingTag)
-		return tagRepository.save(updatedTag)
+	@Transactional
+	fun updateTag(id: Long, incoming: TagEntity): TagEntity {
+		val origin = getTagById(id)
+		origin.update(incoming)
+		return origin
 	}
 
 	fun deleteTag(id: Long): TagEntity {

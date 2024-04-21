@@ -25,4 +25,8 @@ class TagEntity(
 		createdAt = this.createdAt,
 		updatedAt = this.updatedAt,
 	)
+
+	fun update(incoming: TagEntity) {
+		this.name = incoming.name
+	}
 }

@@ -43,4 +43,14 @@ class ArticleEntity(
 		createdAt = this.createdAt,
 		updatedAt = this.updatedAt,
 	)
+
+	fun update(incoming: ArticleEntity) {
+		this.title = incoming.title
+		this.summary = incoming.summary
+		this.link = incoming.link
+		this.menuTag = incoming.menuTag
+		this.hits = incoming.hits
+		this.linkHits = incoming.linkHits
+		this.isPublished = incoming.isPublished
+	}
 }
