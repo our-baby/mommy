@@ -15,12 +15,11 @@ class TagEntity(
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "tag_id")
-	val id: Long,
+	val id: Long = 0,
 	@Column(nullable = false, length = 10)
 	var name: String,
 ) : BaseEntity() {
 	fun toDto() = TagResponseDto(
-		id = this.id,
 		name = this.name,
 		createdAt = this.createdAt,
 		updatedAt = this.updatedAt,

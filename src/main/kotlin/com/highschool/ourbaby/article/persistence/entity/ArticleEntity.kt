@@ -15,7 +15,7 @@ class ArticleEntity(
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "article_id")
-	val id: Long,
+	val id: Long = 0,
 	@Column(nullable = false, length = 50)
 	var title: String,
 	@Column(columnDefinition = "TEXT")
@@ -32,7 +32,6 @@ class ArticleEntity(
 	var isPublished: Boolean = false,
 ) : BaseEntity() {
 	fun toDto() = ArticleResponseDto(
-		id = this.id,
 		title = this.title,
 		summary = this.summary,
 		link = this.link,

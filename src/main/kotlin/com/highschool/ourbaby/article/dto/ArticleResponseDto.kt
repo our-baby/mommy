@@ -4,7 +4,6 @@ import com.highschool.ourbaby.tag.dto.TagResponseDto
 import java.time.LocalDateTime
 
 data class ArticleResponseDto(
-	val id: Long,
 	val title: String,
 	val summary: String,
 	val link: String,

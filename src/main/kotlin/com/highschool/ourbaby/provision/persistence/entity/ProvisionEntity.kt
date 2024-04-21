@@ -14,12 +14,11 @@ import jakarta.persistence.Table
 class ProvisionEntity(
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	val id: Long,
+	val id: Long = 0,
 	@Column(columnDefinition = "TEXT")
 	var description: String,
 ) : BaseEntity() {
 	fun toDto() = ProvisionResponseDto(
-		id = this.id,
 		description = this.description,
 		createdAt = this.createdAt,
 		updatedAt = this.updatedAt,
