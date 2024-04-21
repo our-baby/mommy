@@ -17,15 +17,11 @@ class TagEntity(
 	@Column(name = "tag_id")
 	val id: Long = 0,
 	@Column(nullable = false, length = 10)
-	var name: String,
+	val name: String,
 ) : BaseEntity() {
 	fun toDto() = TagResponseDto(
 		name = this.name,
 		createdAt = this.createdAt,
 		updatedAt = this.updatedAt,
 	)
-
-	fun update(incoming: TagEntity) {
-		this.name = incoming.name
-	}
 }

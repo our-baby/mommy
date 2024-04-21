@@ -16,15 +16,11 @@ class ProvisionEntity(
 	@GeneratedValue(strategy = IDENTITY)
 	val id: Long = 0,
 	@Column(columnDefinition = "TEXT")
-	var description: String,
+	val description: String,
 ) : BaseEntity() {
 	fun toDto() = ProvisionResponseDto(
 		description = this.description,
 		createdAt = this.createdAt,
 		updatedAt = this.updatedAt,
 	)
-
-	fun update(incoming: ProvisionEntity) {
-		this.description = incoming.description
-	}
 }

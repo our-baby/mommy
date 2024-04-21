@@ -13,15 +13,19 @@ class ProvisionService(private val provisionRepository: ProvisionRepository) {
 	fun getProvisionById(id: Long) =
 		provisionRepository.findById(id).getOrNull() ?: throw NoSuchElementException("No Provision with id $id")
 
+	@Transactional
 	fun createProvision(incoming: ProvisionEntity) = provisionRepository.save(incoming)
 
 	@Transactional
 	fun updateProvision(id: Long, incoming: ProvisionEntity): ProvisionEntity {
 		val origin = getProvisionById(id)
-		origin.update(incoming)
-		return origin
+		return provisionRepository.save(ProvisionEntity(
+			id = origin.id,
+			description = incoming.description,
+		))
 	}
 
+	@Transactional
 	fun deleteProvision(id: Long): ProvisionEntity {
 		val deleted = getProvisionById(id)
 		provisionRepository.deleteById(id)

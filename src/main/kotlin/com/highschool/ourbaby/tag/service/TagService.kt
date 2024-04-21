@@ -14,23 +14,22 @@ class TagService(private val tagRepository: TagRepository) {
 	fun getTagById(id: Long) =
 		tagRepository.findById(id).getOrNull() ?: throw NoSuchElementException("No Tag with id $id")
 
+	@Transactional
 	fun createTag(incomingTag: TagEntity) = tagRepository.save(incomingTag)
 
 	@Transactional
 	fun updateTag(id: Long, incoming: TagEntity): TagEntity {
 		val origin = getTagById(id)
-		origin.update(incoming)
-		return origin
+		return tagRepository.save(TagEntity(
+			id = origin.id,
+			name = origin.name,
+		))
 	}
 
+	@Transactional
 	fun deleteTag(id: Long): TagEntity {
 		val tag = getTagById(id)
 		tagRepository.deleteById(id)
 		return tag
-	}
-
-	private fun updateTagProperties(origin: TagEntity, incomingTag: TagEntity): TagEntity {
-		origin.name = incomingTag.name
-		return origin
 	}
 }
