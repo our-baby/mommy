@@ -19,6 +19,7 @@ class ProvisionEntity(
 	val description: String,
 ) : BaseEntity() {
 	fun toDto() = ProvisionResponseDto(
+		id = this.id,
 		description = this.description,
 		createdAt = this.createdAt,
 		updatedAt = this.updatedAt,

@@ -20,6 +20,7 @@ class TagEntity(
 	val name: String,
 ) : BaseEntity() {
 	fun toDto() = TagResponseDto(
+		id = this.id,
 		name = this.name,
 		createdAt = this.createdAt,
 		updatedAt = this.updatedAt,

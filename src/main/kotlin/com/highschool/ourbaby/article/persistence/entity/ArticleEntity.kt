@@ -32,6 +32,7 @@ class ArticleEntity(
 	val isPublished: Boolean = false,
 ) : BaseEntity() {
 	fun toDto() = ArticleResponseDto(
+		id = this.id,
 		title = this.title,
 		summary = this.summary,
 		link = this.link,
