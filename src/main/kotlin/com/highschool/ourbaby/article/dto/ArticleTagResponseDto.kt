@@ -1,6 +1,5 @@
-package com.highschool.ourbaby.articleTag.dto
+package com.highschool.ourbaby.article.dto
 
-import com.highschool.ourbaby.article.dto.ArticleResponseDto
 import com.highschool.ourbaby.tag.dto.TagResponseDto
 import java.time.LocalDateTime
 

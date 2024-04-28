@@ -1,7 +1,6 @@
-package com.highschool.ourbaby.articleTag.persistence.entity
+package com.highschool.ourbaby.article.persistence.entity
 
-import com.highschool.ourbaby.article.persistence.entity.ArticleEntity
-import com.highschool.ourbaby.articleTag.dto.ArticleTagResponseDto
+import com.highschool.ourbaby.article.dto.ArticleTagResponseDto
 import com.highschool.ourbaby.core.persistence.entity.BaseEntity
 import com.highschool.ourbaby.tag.persistence.entity.TagEntity
 import jakarta.persistence.*
@@ -13,7 +12,7 @@ import jakarta.persistence.GenerationType.IDENTITY
 class ArticleTagEntity (
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	val id: Long,
+	val id: Long = 0,
 
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "article_id")
