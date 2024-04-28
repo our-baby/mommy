@@ -19,16 +19,16 @@ class ProvisionService(private val provisionRepository: ProvisionRepository) {
 	@Transactional
 	fun updateProvision(id: Long, incoming: ProvisionEntity): ProvisionEntity {
 		val origin = getProvisionById(id)
-		return provisionRepository.save(ProvisionEntity(
-			id = origin.id,
-			description = incoming.description,
-		))
+		return provisionRepository.save(
+			ProvisionEntity(
+				id = origin.id,
+				description = incoming.description,
+			)
+		)
 	}
 
 	@Transactional
-	fun deleteProvision(id: Long): ProvisionEntity {
-		val deleted = getProvisionById(id)
+	fun deleteProvision(id: Long) {
 		provisionRepository.deleteById(id)
-		return deleted
 	}
 }

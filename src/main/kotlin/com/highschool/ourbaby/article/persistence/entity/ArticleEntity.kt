@@ -30,17 +30,4 @@ class ArticleEntity(
 	val linkHits: Int = 0,
 	@Column(name = "is_published")
 	val isPublished: Boolean = false,
-) : BaseEntity() {
-	fun toDto() = ArticleResponseDto(
-		id = this.id,
-		title = this.title,
-		summary = this.summary,
-		link = this.link,
-		menuTag = this.menuTag,
-		hits = this.hits,
-		linkHits = this.linkHits,
-		isPublished = this.isPublished,
-		createdAt = this.createdAt,
-		updatedAt = this.updatedAt,
-	)
-}
+) : BaseEntity()

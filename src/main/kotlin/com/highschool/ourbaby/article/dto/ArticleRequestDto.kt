@@ -20,5 +20,4 @@ data class ArticleRequestDto(
 		linkHits = this.linkHits,
 		isPublished = this.isPublished,
 	)
-
 }

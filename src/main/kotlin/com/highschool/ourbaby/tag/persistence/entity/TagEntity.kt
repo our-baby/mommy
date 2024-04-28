@@ -18,11 +18,4 @@ class TagEntity(
 	val id: Long = 0,
 	@Column(nullable = false, length = 10)
 	val name: String,
-) : BaseEntity() {
-	fun toDto() = TagResponseDto(
-		id = this.id,
-		name = this.name,
-		createdAt = this.createdAt,
-		updatedAt = this.updatedAt,
-	)
-}
+) : BaseEntity()

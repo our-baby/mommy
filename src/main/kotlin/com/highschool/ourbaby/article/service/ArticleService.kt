@@ -40,16 +40,18 @@ class ArticleService(
 
 	fun updateArticle(id: Long, incoming: ArticleEntity): ArticleEntity {
 		val origin = getArticleById(id)
-		return articleRepository.save(ArticleEntity(
-			id = origin.id,
-			title = incoming.title,
-			summary = incoming.summary,
-			link = incoming.link,
-			menuTag = incoming.menuTag,
-			hits = incoming.hits,
-			linkHits = incoming.linkHits,
-			isPublished = incoming.isPublished,
-		))
+		return articleRepository.save(
+			ArticleEntity(
+				id = origin.id,
+				title = incoming.title,
+				summary = incoming.summary,
+				link = incoming.link,
+				menuTag = incoming.menuTag,
+				hits = incoming.hits,
+				linkHits = incoming.linkHits,
+				isPublished = incoming.isPublished,
+			)
+		)
 	}
 
 	@Transactional

@@ -17,11 +17,4 @@ class ProvisionEntity(
 	val id: Long = 0,
 	@Column(columnDefinition = "TEXT")
 	val description: String,
-) : BaseEntity() {
-	fun toDto() = ProvisionResponseDto(
-		id = this.id,
-		description = this.description,
-		createdAt = this.createdAt,
-		updatedAt = this.updatedAt,
-	)
-}
+) : BaseEntity()
