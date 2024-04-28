@@ -9,8 +9,9 @@ import org.springframework.transaction.annotation.Transactional
 interface ArticleTagRepository : JpaRepository<ArticleTagEntity, Long> {
 	@Query("SELECT at FROM ArticleTagEntity at JOIN FETCH at.tag t WHERE at.article.id = :articleId")
 	fun findTagByArticleId(@Param("articleId") articleId: Long): List<ArticleTagEntity>
-	fun findByArticleIdAndTagId(articleId: Long, tagId: Long): ArticleTagEntity?
 
+	@Query("SELECT at FROM ArticleTagEntity at JOIN FETCH at.article a WHERE at.tag.id = :tagId")
+	fun findArticleByTagId(@Param("tagId") tagId: Long): List<ArticleTagEntity>
 	@Transactional
 	fun deleteByArticleIdAndTagId(articleId: Long, tagId: Long)
 }
