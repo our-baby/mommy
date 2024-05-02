@@ -12,6 +12,7 @@ interface ArticleTagRepository : JpaRepository<ArticleTagEntity, Long> {
 
 	@Query("SELECT at FROM ArticleTagEntity at JOIN FETCH at.article a WHERE at.tag.id = :tagId")
 	fun findArticleByTagId(@Param("tagId") tagId: Long): List<ArticleTagEntity>
+
 	@Transactional
 	fun deleteByArticleIdAndTagId(articleId: Long, tagId: Long)
 }

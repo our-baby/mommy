@@ -9,7 +9,7 @@ import jakarta.persistence.GenerationType.IDENTITY
 
 @Entity
 @Table(name = "article_tag")
-class ArticleTagEntity (
+class ArticleTagEntity(
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	val id: Long = 0,
@@ -21,7 +21,7 @@ class ArticleTagEntity (
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "tag_id")
 	var tag: TagEntity,
-): BaseEntity() {
+) : BaseEntity() {
 	fun toDto() = ArticleTagResponseDto(
 		id = this.id,
 		article = this.article.toDto(),
