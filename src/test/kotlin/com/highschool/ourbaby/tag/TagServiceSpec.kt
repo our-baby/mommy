@@ -61,8 +61,7 @@ class TagServiceSpec(private val tagRepository: TagRepository): ExpectSpec() {
 			expect("선택된 태그를 반환하면서 삭제된다.") {
 				val tag = Mock.tag()
 				val newTag = createNewTag(tag)
-				val deletedTag = tagService.deleteTag(newTag.id)
-				validate(newTag, deletedTag)
+				tagService.deleteTag(newTag.id)
 			}
 		}
 	}

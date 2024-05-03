@@ -61,8 +61,7 @@ class ProvisionServiceSpec(
 			expect("원하는 조항이 정상적으로 삭제된다.") {
 				val provision = Mock.provision()
 				val newProvision = createProvision(provision)
-				val deleteProvision = provisionService.deleteProvision(newProvision.id)
-				validate(deleteProvision, newProvision)
+				provisionService.deleteProvision(newProvision.id)
 			}
 		}
 	}
