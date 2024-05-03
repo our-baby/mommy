@@ -7,11 +7,14 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType.IDENTITY
 import jakarta.persistence.Id
+import jakarta.persistence.Table
 
 @Entity
+@Table(name = "article")
 class ArticleEntity(
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "article_id")
 	val id: Long,
 	@Column(nullable = false, length = 50)
 	var title: String,

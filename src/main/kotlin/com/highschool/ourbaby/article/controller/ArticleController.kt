@@ -1,6 +1,8 @@
 package com.highschool.ourbaby.article.controller
 
 import com.highschool.ourbaby.article.dto.ArticleRequestDto
+import com.highschool.ourbaby.article.dto.ArticleResponseDto
+import com.highschool.ourbaby.article.dto.ArticleTagRequestDto
 import com.highschool.ourbaby.article.service.ArticleService
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -20,14 +23,36 @@ class ArticleController(private val articleService: ArticleService) {
 
 
 	@GetMapping("/{id}")
-	fun getArticleById(@PathVariable(value = "id", required = true) id: Long) =
-		articleService.getArticleById(id).toDto()
+	fun getArticleById(@PathVariable(value = "id", required = true) id: Long): ArticleResponseDto {
+		val article = articleService.getArticleById(id).toDto()
+		val tagList = articleService.getTagListByArticleId(id)
+		return ArticleResponseDto(
+			id = article.id,
+			title = article.title,
+			summary = article.summary,
+			link = article.link,
+			menuTag = article.menuTag,
+			hits = article.hits,
+			linkHits = article.linkHits,
+			tagList = tagList.map { it -> it.toDto() },
+			isPublished = article.isPublished,
+			createdAt = article.createdAt,
+			updatedAt = article.updatedAt,
+		)
+	}
 
+	@GetMapping("/tags/{id}")
+	fun getArticlesByTagId(@PathVariable id: Long): List<ArticleResponseDto> {
+		return articleService.getArticlesByTagId(id).map { it -> it.toDto() }
+	}
 
 	@PostMapping
 	fun createArticle(@RequestBody articleRequestDto: ArticleRequestDto) =
 		articleService.createArticle(articleRequestDto.toEntity()).toDto()
 
+	@PostMapping("/tags")
+	fun createArticleTag(@RequestBody articleTagRequestDto: ArticleTagRequestDto) =
+		articleService.createArticleTag(articleTagRequestDto.articleId, articleTagRequestDto.tagId)
 
 	@PutMapping("/{id}")
 	fun updateArticle(
@@ -37,5 +62,10 @@ class ArticleController(private val articleService: ArticleService) {
 
 
 	@DeleteMapping("/{id}")
-	fun deleteArticle(@PathVariable(value = "id", required = true) id: Long) = articleService.deleteArticle(id).toDto()
+	fun deleteArticle(@PathVariable(value = "id", required = true) id: Long) = articleService.deleteArticle(id)
+
+	@DeleteMapping("/tags")
+	fun deleteArticleTag(@RequestParam articleId: Long, @RequestParam tagId: Long) =
+		articleService.deleteArticleTag(articleId, tagId)
+
 }
