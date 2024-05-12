@@ -28,6 +28,7 @@ class ArticleService(
 		return articleTagRepository.findArticleByTagId(id).map { it -> it.article }
 	}
 
+	@Transactional
 	fun createArticle(incomingArticle: ArticleEntity) = articleRepository.save(incomingArticle)
 
 	@Transactional
@@ -37,29 +38,30 @@ class ArticleService(
 		return articleTagRepository.save(ArticleTagEntity(article = article, tag = tag))
 	}
 
-	fun updateArticle(id: Long, incomingArticle: ArticleEntity): ArticleEntity {
-		val article = getArticleById(id)
-		val updatedArticle = updateArticleProperties(article, incomingArticle)
-		return articleRepository.save(updatedArticle)
+	fun updateArticle(id: Long, incoming: ArticleEntity): ArticleEntity {
+		val origin = getArticleById(id)
+		return articleRepository.save(
+			ArticleEntity(
+				id = origin.id,
+				title = incoming.title,
+				summary = incoming.summary,
+				link = incoming.link,
+				menuTag = incoming.menuTag,
+				hits = incoming.hits,
+				linkHits = incoming.linkHits,
+				isPublished = incoming.isPublished,
+			)
+		)
 	}
 
+	@Transactional
 	fun deleteArticle(id: Long) {
+		val article = getArticleById(id)
 		articleRepository.deleteById(id)
 	}
 
 	@Transactional
 	fun deleteArticleTag(articleId: Long, tagId: Long) {
 		articleTagRepository.deleteByArticleIdAndTagId(articleId, tagId)
-	}
-
-	private fun updateArticleProperties(origin: ArticleEntity, incoming: ArticleEntity): ArticleEntity {
-		origin.title = incoming.title
-		origin.summary = incoming.summary
-		origin.link = incoming.link
-		origin.menuTag = incoming.menuTag
-		origin.hits = incoming.hits
-		origin.linkHits = incoming.linkHits
-		origin.isPublished = incoming.isPublished
-		return origin
 	}
 }

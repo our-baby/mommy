@@ -19,36 +19,21 @@ import org.springframework.web.bind.annotation.RestController
 class ArticleController(private val articleService: ArticleService) {
 
 	@GetMapping
-	fun getAllArticles() = articleService.getAllArticles().map { it -> it.toDto() }
+	fun getAllArticles() = articleService.getAllArticles().map { it -> ArticleResponseDto.fromEntity(it) }
 
 
 	@GetMapping("/{id}")
-	fun getArticleById(@PathVariable(value = "id", required = true) id: Long): ArticleResponseDto {
-		val article = articleService.getArticleById(id).toDto()
-		val tagList = articleService.getTagListByArticleId(id)
-		return ArticleResponseDto(
-			id = article.id,
-			title = article.title,
-			summary = article.summary,
-			link = article.link,
-			menuTag = article.menuTag,
-			hits = article.hits,
-			linkHits = article.linkHits,
-			tagList = tagList.map { it -> it.toDto() },
-			isPublished = article.isPublished,
-			createdAt = article.createdAt,
-			updatedAt = article.updatedAt,
-		)
-	}
+	fun getArticleById(@PathVariable(value = "id", required = true) id: Long) =
+		ArticleResponseDto.fromEntity(articleService.getArticleById(id))
 
 	@GetMapping("/tags/{id}")
 	fun getArticlesByTagId(@PathVariable id: Long): List<ArticleResponseDto> {
-		return articleService.getArticlesByTagId(id).map { it -> it.toDto() }
+		return articleService.getArticlesByTagId(id).map { it -> ArticleResponseDto.fromEntity(it) }
 	}
 
 	@PostMapping
 	fun createArticle(@RequestBody articleRequestDto: ArticleRequestDto) =
-		articleService.createArticle(articleRequestDto.toEntity()).toDto()
+		ArticleResponseDto.fromEntity(articleService.createArticle(articleRequestDto.toEntity()))
 
 	@PostMapping("/tags")
 	fun createArticleTag(@RequestBody articleTagRequestDto: ArticleTagRequestDto) =
@@ -58,7 +43,7 @@ class ArticleController(private val articleService: ArticleService) {
 	fun updateArticle(
 		@PathVariable(value = "id", required = true) id: Long,
 		@RequestBody articleRequestDto: ArticleRequestDto
-	) = articleService.updateArticle(id, articleRequestDto.toEntity()).toDto()
+	) = ArticleResponseDto.fromEntity(articleService.updateArticle(id, articleRequestDto.toEntity()))
 
 
 	@DeleteMapping("/{id}")
@@ -67,5 +52,4 @@ class ArticleController(private val articleService: ArticleService) {
 	@DeleteMapping("/tags")
 	fun deleteArticleTag(@RequestParam articleId: Long, @RequestParam tagId: Long) =
 		articleService.deleteArticleTag(articleId, tagId)
-
 }

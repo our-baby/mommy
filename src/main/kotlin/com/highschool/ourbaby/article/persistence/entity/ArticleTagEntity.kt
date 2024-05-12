@@ -22,14 +22,6 @@ class ArticleTagEntity(
 	@JoinColumn(name = "tag_id")
 	var tag: TagEntity,
 ) : BaseEntity() {
-	fun toDto() = ArticleTagResponseDto(
-		id = this.id,
-		article = this.article.toDto(),
-		tag = this.tag.toDto(),
-		createdAt = this.createdAt,
-		updatedAt = this.updatedAt,
-	)
-
 	fun update(article: ArticleEntity, tag: TagEntity) {
 		this.article = article
 		this.tag = tag

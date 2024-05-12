@@ -1,7 +1,7 @@
-package com.highschool.ourbaby.tag.persistence.entity
+package com.highschool.ourbaby.provision.persistence.entity
 
 import com.highschool.ourbaby.core.persistence.entity.BaseEntity
-import com.highschool.ourbaby.tag.dto.TagResponseDto
+import com.highschool.ourbaby.provision.dto.ProvisionResponseDto
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -10,12 +10,11 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "tag")
-class TagEntity(
+@Table(name = "provision")
+class ProvisionEntity(
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "tag_id")
 	val id: Long = 0,
-	@Column(nullable = false, length = 10)
-	val name: String,
+	@Column(columnDefinition = "TEXT")
+	val description: String,
 ) : BaseEntity()

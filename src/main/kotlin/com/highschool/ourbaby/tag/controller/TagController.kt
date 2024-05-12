@@ -1,6 +1,7 @@
 package com.highschool.ourbaby.tag.controller
 
 import com.highschool.ourbaby.tag.dto.TagRequestDto
+import com.highschool.ourbaby.tag.dto.TagResponseDto
 import com.highschool.ourbaby.tag.service.TagService
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -15,18 +16,20 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/tags")
 class TagController(private val tagService: TagService) {
 	@GetMapping
-	fun getAllTags() = tagService.getAllTags().map { it -> it.toDto() }
+	fun getAllTags() = tagService.getAllTags().map { it -> TagResponseDto.fromEntity(it) }
 
 	@GetMapping("/{id}")
-	fun getTagById(@PathVariable(name = "id", required = true) id: Long) = tagService.getTagById(id).toDto()
+	fun getTagById(@PathVariable(name = "id", required = true) id: Long) =
+		TagResponseDto.fromEntity(tagService.getTagById(id))
 
 	@PostMapping
-	fun createTag(@RequestBody tagRequestDto: TagRequestDto) = tagService.createTag(tagRequestDto.toEntity()).toDto()
+	fun createTag(@RequestBody tagRequestDto: TagRequestDto) =
+		TagResponseDto.fromEntity(tagService.createTag(tagRequestDto.toEntity()))
 
 	@PutMapping("/{id}")
 	fun updateTag(@PathVariable id: Long, @RequestBody tagRequestDto: TagRequestDto) =
-		tagService.updateTag(id, tagRequestDto.toEntity()).toDto()
+		TagResponseDto.fromEntity(tagService.updateTag(id, tagRequestDto.toEntity()))
 
 	@DeleteMapping("/{id}")
-	fun deleteTag(@PathVariable id: Long) = tagService.deleteTag(id).toDto()
+	fun deleteTag(@PathVariable id: Long) = tagService.deleteTag(id)
 }

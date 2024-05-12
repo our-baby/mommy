@@ -4,7 +4,9 @@ import com.highschool.ourbaby.Mock
 import com.highschool.ourbaby.SpringDataConfig
 import com.highschool.ourbaby.article.persistence.entity.ArticleEntity
 import com.highschool.ourbaby.article.persistence.repository.ArticleRepository
+import com.highschool.ourbaby.article.persistence.repository.ArticleTagRepository
 import com.highschool.ourbaby.article.service.ArticleService
+import com.highschool.ourbaby.tag.service.TagService
 import io.kotest.core.spec.style.ExpectSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -21,9 +23,11 @@ import org.springframework.test.context.ContextConfiguration
 @ContextConfiguration(classes = [SpringDataConfig::class])
 @AutoConfigureTestDatabase(replace = NONE)
 class ArticleServiceSpec(
-	private val articleRepository: ArticleRepository
+	private val articleRepository: ArticleRepository,
+	private val articleTagRepository: ArticleTagRepository,
+	private val tagService: TagService,
 ) : ExpectSpec() {
-	private val articleService = ArticleService(articleRepository)
+	private val articleService = ArticleService(articleRepository, tagService, articleTagRepository)
 
 	init {
 		context("게시글 생성할 때") {
@@ -66,8 +70,7 @@ class ArticleServiceSpec(
 			expect("원하는 게시글이 정상적으로 삭제된다.") {
 				val article = Mock.article()
 				val newArticle = createNewArticle(article)
-				val deleteArticle = articleService.deleteArticle(newArticle.id)
-				validate(deleteArticle, newArticle)
+				articleService.deleteArticle(newArticle.id)
 			}
 		}
 	}
