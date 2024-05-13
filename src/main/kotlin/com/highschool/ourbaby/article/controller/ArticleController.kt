@@ -4,6 +4,7 @@ import com.highschool.ourbaby.article.dto.ArticleRequestDto
 import com.highschool.ourbaby.article.dto.ArticleResponseDto
 import com.highschool.ourbaby.article.dto.ArticleTagRequestDto
 import com.highschool.ourbaby.article.service.ArticleService
+import com.highschool.ourbaby.tag.dto.TagResponseDto
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -23,10 +24,13 @@ class ArticleController(private val articleService: ArticleService) {
 
 
 	@GetMapping("/{id}")
-	fun getArticleById(@PathVariable(value = "id", required = true) id: Long) =
-		ArticleResponseDto.fromEntity(articleService.getArticleById(id))
+	fun getArticleById(@PathVariable(value = "id", required = true) id: Long): ArticleResponseDto {
+		val articleResponseDto = ArticleResponseDto.fromEntity(articleService.getArticleById(id))
+		articleResponseDto.tagList =  articleService.getTagsByArticleId(id).map { it -> TagResponseDto.fromEntity(it) }
+		return articleResponseDto
+	}
 
-	@GetMapping("/tags/{id}")
+	@GetMapping("/tag/{id}")
 	fun getArticlesByTagId(@PathVariable id: Long): List<ArticleResponseDto> {
 		return articleService.getArticlesByTagId(id).map { it -> ArticleResponseDto.fromEntity(it) }
 	}

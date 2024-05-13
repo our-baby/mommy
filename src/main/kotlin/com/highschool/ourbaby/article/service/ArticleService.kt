@@ -25,7 +25,11 @@ class ArticleService(
 		articleRepository.findById(id).getOrNull() ?: throw NoSuchElementException("No Article with id $id")
 
 	fun getArticlesByTagId(id: Long): List<ArticleEntity> {
-		return articleTagRepository.findArticleByTagId(id).map { it -> it.article }
+		return articleTagRepository.findArticlesByTagId(id).map { it -> it.article }
+	}
+
+	fun getTagsByArticleId(id: Long): List<TagEntity> {
+		return articleTagRepository.findTagsByArticleId(id).map { it -> it.tag }
 	}
 
 	@Transactional
