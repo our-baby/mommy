@@ -20,12 +20,12 @@ class TagService(private val tagRepository: TagRepository) {
 	@Transactional
 	fun updateTag(id: Long, incoming: TagEntity): TagEntity {
 		val origin = getTagById(id)
-		return tagRepository.save(
-			TagEntity(
-				id = origin.id,
-				name = origin.name,
-			)
+		val update = TagEntity(
+			id = origin.id,
+			name = incoming.name,
 		)
+		update.createdAt = origin.createdAt
+		return tagRepository.save(update)
 	}
 
 	@Transactional

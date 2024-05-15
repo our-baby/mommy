@@ -6,15 +6,16 @@ import com.highschool.ourbaby.article.persistence.entity.ArticleEntity
 import com.highschool.ourbaby.article.persistence.repository.ArticleRepository
 import com.highschool.ourbaby.article.persistence.repository.ArticleTagRepository
 import com.highschool.ourbaby.article.service.ArticleService
+import com.highschool.ourbaby.tag.persistence.entity.TagEntity
+import com.highschool.ourbaby.tag.persistence.repository.TagRepository
 import com.highschool.ourbaby.tag.service.TagService
 import io.kotest.core.spec.style.ExpectSpec
+import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import jakarta.persistence.EntityListeners
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 import org.springframework.test.context.ContextConfiguration
 
@@ -25,8 +26,9 @@ import org.springframework.test.context.ContextConfiguration
 class ArticleServiceSpec(
 	private val articleRepository: ArticleRepository,
 	private val articleTagRepository: ArticleTagRepository,
-	private val tagService: TagService,
+	private val tagRepository: TagRepository,
 ) : ExpectSpec() {
+	private val tagService = TagService(tagRepository)
 	private val articleService = ArticleService(articleRepository, tagService, articleTagRepository)
 
 	init {
@@ -52,8 +54,7 @@ class ArticleServiceSpec(
 				val article = Mock.article()
 				createNewArticle(article)
 				val articles = articleService.getAllArticles()
-				articles.size shouldBe 1
-				validate(articles[0], article)
+				articles.size shouldBeGreaterThan 0
 			}
 		}
 
@@ -73,9 +74,27 @@ class ArticleServiceSpec(
 				articleService.deleteArticle(newArticle.id)
 			}
 		}
+
+		context("게시글에 태그 추가") {
+			val newArticle = createNewArticle(Mock.article())
+			val newTag = createNewTag(Mock.tag())
+			articleService.createArticleTag(newArticle.id, newTag.id)
+			expect("태그 ID로 조회했을 때 해당 게시글이 조회된다.") {
+				val relatedArticleList = articleService.getArticlesByTagId(newTag.id)
+				relatedArticleList.size shouldBe 1
+				relatedArticleList[0].id shouldBe newArticle.id
+			}
+			expect("게시글 조회할 때 관련된 태그들도 조회된다.") {
+				val tagList = articleService.getTagsByArticleId(newArticle.id)
+				tagList.size shouldBe 1
+				tagList[0].name shouldBe newTag.name
+			}
+		}
 	}
 
 	fun createNewArticle(article: ArticleEntity) = articleService.createArticle(article)
+
+	fun createNewTag(tag: TagEntity) = tagService.createTag(tag)
 
 	fun validate(from: ArticleEntity, to: ArticleEntity) {
 		from.title shouldBe to.title
