@@ -15,7 +15,6 @@ open class BaseEntity {
 	@CreatedDate
 	open var createdAt: LocalDateTime = LocalDateTime.now()
 
-	@LastModifiedDate
 	@Column(name = "updated_at", columnDefinition = "DATETIME")
-	open var updatedAt: LocalDateTime? = null
+	open var updatedAt: LocalDateTime = LocalDateTime.now()
 }

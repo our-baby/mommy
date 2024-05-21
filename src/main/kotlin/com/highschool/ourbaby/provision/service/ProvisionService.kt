@@ -19,12 +19,12 @@ class ProvisionService(private val provisionRepository: ProvisionRepository) {
 	@Transactional
 	fun updateProvision(id: Long, incoming: ProvisionEntity): ProvisionEntity {
 		val origin = getProvisionById(id)
-		return provisionRepository.save(
-			ProvisionEntity(
-				id = origin.id,
-				description = incoming.description,
-			)
+		val update = ProvisionEntity(
+			id = origin.id,
+			description = incoming.description,
 		)
+		update.createdAt = origin.createdAt
+		return provisionRepository.save(update)
 	}
 
 	@Transactional

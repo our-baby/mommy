@@ -25,7 +25,11 @@ class ArticleService(
 		articleRepository.findById(id).getOrNull() ?: throw NoSuchElementException("No Article with id $id")
 
 	fun getArticlesByTagId(id: Long): List<ArticleEntity> {
-		return articleTagRepository.findArticleByTagId(id).map { it -> it.article }
+		return articleTagRepository.findArticlesByTagId(id).map { it -> it.article }
+	}
+
+	fun getTagsByArticleId(id: Long): List<TagEntity> {
+		return articleTagRepository.findTagsByArticleId(id).map { it -> it.tag }
 	}
 
 	@Transactional
@@ -40,18 +44,18 @@ class ArticleService(
 
 	fun updateArticle(id: Long, incoming: ArticleEntity): ArticleEntity {
 		val origin = getArticleById(id)
-		return articleRepository.save(
-			ArticleEntity(
-				id = origin.id,
-				title = incoming.title,
-				summary = incoming.summary,
-				link = incoming.link,
-				menuTag = incoming.menuTag,
-				hits = incoming.hits,
-				linkHits = incoming.linkHits,
-				isPublished = incoming.isPublished,
-			)
+		val update = ArticleEntity(
+			id = origin.id,
+			title = incoming.title,
+			summary = incoming.summary,
+			link = incoming.link,
+			menuTag = incoming.menuTag,
+			hits = incoming.hits,
+			linkHits = incoming.linkHits,
+			isPublished = incoming.isPublished,
 		)
+		update.createdAt = origin.createdAt
+		return articleRepository.save(update)
 	}
 
 	@Transactional
