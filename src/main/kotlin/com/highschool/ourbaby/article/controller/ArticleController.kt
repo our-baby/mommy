@@ -30,7 +30,7 @@ class ArticleController(private val articleService: ArticleService) {
 		return articleResponseDto
 	}
 
-	@GetMapping("/tag/{id}")
+	@GetMapping("/tags/{id}")
 	fun getArticlesByTagId(@PathVariable id: Long): List<ArticleResponseDto> {
 		return articleService.getArticlesByTagId(id).map { it -> ArticleResponseDto.fromEntity(it) }
 	}
