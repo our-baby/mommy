@@ -1,6 +1,6 @@
-package com.highschool.ourbaby.article.persistence.repository
+package com.highschool.ourbaby.articleTag.persistence.repository
 
-import com.highschool.ourbaby.article.persistence.entity.ArticleTagEntity
+import com.highschool.ourbaby.articleTag.persistence.entity.ArticleTagEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param

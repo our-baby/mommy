@@ -1,6 +1,5 @@
 package com.highschool.ourbaby.article.persistence.entity
 
-import com.highschool.ourbaby.article.dto.ArticleResponseDto
 import com.highschool.ourbaby.core.persistence.entity.BaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

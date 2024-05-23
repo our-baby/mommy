@@ -1,6 +1,5 @@
 package com.highschool.ourbaby.bookmark.service
 
-import com.highschool.ourbaby.article.persistence.repository.ArticleRepository
 import com.highschool.ourbaby.article.service.ArticleService
 import com.highschool.ourbaby.bookmark.persistence.entity.BookmarkEntity
 import com.highschool.ourbaby.bookmark.persistence.repository.BookmarkRepository

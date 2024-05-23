@@ -4,11 +4,7 @@ import com.highschool.ourbaby.Mock
 import com.highschool.ourbaby.SpringDataConfig
 import com.highschool.ourbaby.article.persistence.entity.ArticleEntity
 import com.highschool.ourbaby.article.persistence.repository.ArticleRepository
-import com.highschool.ourbaby.article.persistence.repository.ArticleTagRepository
 import com.highschool.ourbaby.article.service.ArticleService
-import com.highschool.ourbaby.tag.persistence.entity.TagEntity
-import com.highschool.ourbaby.tag.persistence.repository.TagRepository
-import com.highschool.ourbaby.tag.service.TagService
 import io.kotest.core.spec.style.ExpectSpec
 import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
@@ -25,11 +21,8 @@ import org.springframework.test.context.ContextConfiguration
 @AutoConfigureTestDatabase(replace = NONE)
 class ArticleServiceSpec(
 	private val articleRepository: ArticleRepository,
-	private val articleTagRepository: ArticleTagRepository,
-	private val tagRepository: TagRepository,
 ) : ExpectSpec() {
-	private val tagService = TagService(tagRepository)
-	private val articleService = ArticleService(articleRepository, tagService, articleTagRepository)
+	private val articleService = ArticleService(articleRepository)
 
 	init {
 		context("게시글 생성할 때") {
@@ -74,27 +67,9 @@ class ArticleServiceSpec(
 				articleService.deleteArticle(newArticle.id)
 			}
 		}
-
-		context("게시글에 태그 추가") {
-			val newArticle = createNewArticle(Mock.article())
-			val newTag = createNewTag(Mock.tag())
-			articleService.createArticleTag(newArticle.id, newTag.id)
-			expect("태그 ID로 조회했을 때 해당 게시글이 조회된다.") {
-				val relatedArticleList = articleService.getArticlesByTagId(newTag.id)
-				relatedArticleList.size shouldBe 1
-				relatedArticleList[0].id shouldBe newArticle.id
-			}
-			expect("게시글 조회할 때 관련된 태그들도 조회된다.") {
-				val tagList = articleService.getTagsByArticleId(newArticle.id)
-				tagList.size shouldBe 1
-				tagList[0].name shouldBe newTag.name
-			}
-		}
 	}
 
 	fun createNewArticle(article: ArticleEntity) = articleService.createArticle(article)
-
-	fun createNewTag(tag: TagEntity) = tagService.createTag(tag)
 
 	fun validate(from: ArticleEntity, to: ArticleEntity) {
 		from.title shouldBe to.title

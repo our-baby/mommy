@@ -1,4 +1,4 @@
-package com.highschool.ourbaby.article.dto
+package com.highschool.ourbaby.articleTag.dto
 
 data class ArticleTagRequestDto(
 	val articleId: Long,

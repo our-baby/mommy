@@ -1,6 +1,6 @@
-package com.highschool.ourbaby.article.persistence.entity
+package com.highschool.ourbaby.articleTag.persistence.entity
 
-import com.highschool.ourbaby.article.dto.ArticleTagResponseDto
+import com.highschool.ourbaby.article.persistence.entity.ArticleEntity
 import com.highschool.ourbaby.core.persistence.entity.BaseEntity
 import com.highschool.ourbaby.tag.persistence.entity.TagEntity
 import jakarta.persistence.*
@@ -21,9 +21,4 @@ class ArticleTagEntity(
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "tag_id")
 	var tag: TagEntity,
-) : BaseEntity() {
-	fun update(article: ArticleEntity, tag: TagEntity) {
-		this.article = article
-		this.tag = tag
-	}
-}
+) : BaseEntity()
