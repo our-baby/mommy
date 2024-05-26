@@ -3,6 +3,7 @@ package com.highschool.ourbaby.bookmark.persistence.entity
 import com.highschool.ourbaby.article.persistence.entity.ArticleEntity
 import com.highschool.ourbaby.core.persistence.entity.BaseEntity
 import jakarta.persistence.*
+import jakarta.persistence.FetchType.LAZY
 import jakarta.persistence.GenerationType.IDENTITY
 
 @Entity
@@ -13,7 +14,7 @@ class BookmarkEntity(
 	@Column(name = "bookmark_id")
 	val id: Long = 0,
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "article_id")
 	val article: ArticleEntity,
 

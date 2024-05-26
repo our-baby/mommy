@@ -1,5 +1,6 @@
 package com.highschool.ourbaby.bookmark.service
 
+import com.highschool.ourbaby.article.persistence.entity.ArticleEntity
 import com.highschool.ourbaby.article.service.ArticleService
 import com.highschool.ourbaby.bookmark.persistence.entity.BookmarkEntity
 import com.highschool.ourbaby.bookmark.persistence.repository.BookmarkRepository
@@ -13,6 +14,10 @@ class BookmarkService(
 ) {
 
 	fun getAllBookmark(): List<BookmarkEntity> = bookmarkRepository.findAll()
+
+	fun getArticlesByMemberId(id: Long): List<ArticleEntity> =
+		bookmarkRepository.findArticlesByMemberId(id).map { it -> it.article }
+
 
 	@Transactional
 	fun createBookmark(articleId: Long, memberId: Long): BookmarkEntity {
