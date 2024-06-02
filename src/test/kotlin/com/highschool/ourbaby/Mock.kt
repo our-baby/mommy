@@ -3,6 +3,7 @@ package com.highschool.ourbaby
 import com.highschool.ourbaby.article.persistence.entity.ArticleEntity
 import com.highschool.ourbaby.tag.persistence.entity.TagEntity
 import com.highschool.ourbaby.provision.persistence.entity.ProvisionEntity
+import com.highschool.ourbaby.searchHistory.persistence.entity.SearchHistoryEntity
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.*
 
@@ -26,5 +27,11 @@ object Mock {
 	fun provision() = ProvisionEntity(
 		id = 0,
 		description = Arb.string(minSize = 5, maxSize = 100).single(),
+	)
+
+	fun searchHistory(memberId: Long) = SearchHistoryEntity(
+		id = 0,
+		member = memberId,
+		keyword = Arb.string(5..10).single()
 	)
 }
