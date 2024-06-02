@@ -148,4 +148,4 @@ gradle-app.setting
 .DS_Store
 
 # Dev properties
-application-dev.properties
+application.yml
