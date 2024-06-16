@@ -22,26 +22,26 @@ class ArticleController(
 ) {
 
 	@GetMapping
-	fun getAllArticles() = articleService.getAllArticles().map { it -> ArticleResponseDto.fromEntity(it) }
+	fun getAllArticles() = articleService.getAllArticles().map { ArticleResponseDto(it) }
 
 
 	@GetMapping("/{id}")
 	fun getArticleById(@PathVariable(value = "id", required = true) id: Long): ArticleResponseDto {
-		val articleResponseDto = ArticleResponseDto.fromEntity(articleService.getArticleById(id))
+		val articleResponseDto = ArticleResponseDto(articleService.getArticleById(id))
 		articleResponseDto.tagList =
-			articleTagService.getTagsByArticleId(id).map { it -> TagResponseDto.fromEntity(it) }
+			articleTagService.getTagsByArticleId(id).map { TagResponseDto(it) }
 		return articleResponseDto
 	}
 
 	@PostMapping
 	fun createArticle(@RequestBody articleRequestDto: ArticleRequestDto) =
-		ArticleResponseDto.fromEntity(articleService.createArticle(articleRequestDto.toEntity()))
+		ArticleResponseDto(articleService.createArticle(articleRequestDto.toEntity()))
 
 	@PutMapping("/{id}")
 	fun updateArticle(
 		@PathVariable(value = "id", required = true) id: Long,
 		@RequestBody articleRequestDto: ArticleRequestDto
-	) = ArticleResponseDto.fromEntity(articleService.updateArticle(id, articleRequestDto.toEntity()))
+	) = ArticleResponseDto(articleService.updateArticle(id, articleRequestDto.toEntity()))
 
 
 	@DeleteMapping("/{id}")

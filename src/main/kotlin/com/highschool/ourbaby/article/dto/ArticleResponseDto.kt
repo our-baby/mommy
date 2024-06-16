@@ -13,23 +13,23 @@ data class ArticleResponseDto(
 	val hits: Int,
 	val linkHits: Int,
 	val isPublished: Boolean,
-	var tagList: List<TagResponseDto> = ArrayList<TagResponseDto>(),
 	val createdAt: LocalDateTime,
 	val updatedAt: LocalDateTime?,
+	var tagList: List<TagResponseDto> = ArrayList<TagResponseDto>(),
 ) {
-	companion object Factory {
-		fun fromEntity(articleEntity: ArticleEntity) = ArticleResponseDto(
-			id = articleEntity.id,
-			title = articleEntity.title,
-			summary = articleEntity.summary,
-			link = articleEntity.link,
-			menuTag = articleEntity.menuTag,
-			hits = articleEntity.hits,
-			linkHits = articleEntity.linkHits,
-			isPublished = articleEntity.isPublished,
-			createdAt = articleEntity.createdAt,
-			updatedAt = articleEntity.updatedAt,
-		)
+	constructor (articleEntity: ArticleEntity) : this(
+		articleEntity.id,
+		articleEntity.title,
+		articleEntity.summary,
+		articleEntity.link,
+		articleEntity.menuTag,
+		articleEntity.hits,
+		articleEntity.linkHits,
+		articleEntity.isPublished,
+		articleEntity.createdAt,
+		articleEntity.updatedAt
+	) {
 	}
+
 
 }

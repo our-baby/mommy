@@ -11,7 +11,6 @@ import jakarta.persistence.GenerationType.IDENTITY
 class BookmarkEntity(
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "bookmark_id")
 	val id: Long = 0,
 
 	@ManyToOne(fetch = LAZY)

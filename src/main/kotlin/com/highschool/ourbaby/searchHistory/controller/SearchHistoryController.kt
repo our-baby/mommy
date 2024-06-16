@@ -12,15 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/searchHistories")
-class SearchHistoryController(private val searchHistoryService: SearchHistoryService) {
+@RequestMapping("/api/search-histories")
+class SearchHistoryController(
+	private val searchHistoryService: SearchHistoryService,
+) {
 	@GetMapping("/{id}")
 	fun getSearchHistoriesByMemberId(@PathVariable id: Long) =
-		searchHistoryService.getSearchHistoriesByMemberId(id).map(SearchHistoryResponseDto::fromEntity)
+		searchHistoryService.getSearchHistoriesByMemberId(id).map { SearchHistoryResponseDto(it) }
 
 	@PostMapping
 	fun createSearchHistory(@RequestBody searchHistoryRequestDto: SearchHistoryRequestDto) =
-		SearchHistoryResponseDto.fromEntity(
+		SearchHistoryResponseDto(
 			searchHistoryService.createSearchHistory(
 				searchHistoryRequestDto.keyword,
 				searchHistoryRequestDto.memberId

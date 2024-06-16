@@ -13,7 +13,6 @@ import jakarta.persistence.GenerationType.IDENTITY
 class SearchHistoryEntity(
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "search_history_id")
 	val id: Long = 0,
 
 	@Column(name = "keyword", nullable = true)
@@ -21,7 +20,6 @@ class SearchHistoryEntity(
 
 	// TODO: @ManyToOne(fetch = LAZY)
 	// TODO: JoinColumn(name = "member_id")
-	@Column(name = "member_id")
 	val member: Long = 0, // TODO: Long -> MemeberEntity
 
 ) : BaseEntity() {}

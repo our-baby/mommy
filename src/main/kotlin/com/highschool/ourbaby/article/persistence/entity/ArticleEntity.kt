@@ -13,7 +13,6 @@ import jakarta.persistence.Table
 class ArticleEntity(
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "article_id")
 	val id: Long = 0,
 	@Column(nullable = false, length = 50)
 	val title: String,

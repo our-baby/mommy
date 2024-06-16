@@ -14,21 +14,23 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/tags")
-class TagController(private val tagService: TagService) {
+class TagController(
+	private val tagService: TagService,
+) {
 	@GetMapping
-	fun getAllTags() = tagService.getAllTags().map { it -> TagResponseDto.fromEntity(it) }
+	fun getAllTags() = tagService.getAllTags().map { TagResponseDto(it) }
 
 	@GetMapping("/{id}")
 	fun getTagById(@PathVariable(name = "id", required = true) id: Long) =
-		TagResponseDto.fromEntity(tagService.getTagById(id))
+		TagResponseDto(tagService.getTagById(id))
 
 	@PostMapping
 	fun createTag(@RequestBody tagRequestDto: TagRequestDto) =
-		TagResponseDto.fromEntity(tagService.createTag(tagRequestDto.toEntity()))
+		TagResponseDto(tagService.createTag(tagRequestDto.toEntity()))
 
 	@PutMapping("/{id}")
 	fun updateTag(@PathVariable id: Long, @RequestBody tagRequestDto: TagRequestDto) =
-		TagResponseDto.fromEntity(tagService.updateTag(id, tagRequestDto.toEntity()))
+		TagResponseDto(tagService.updateTag(id, tagRequestDto.toEntity()))
 
 	@DeleteMapping("/{id}")
 	fun deleteTag(@PathVariable id: Long) = tagService.deleteTag(id)
