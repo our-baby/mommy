@@ -3,7 +3,6 @@ package com.highschool.ourbaby.article.service
 import com.highschool.ourbaby.article.persistence.entity.ArticleEntity
 import com.highschool.ourbaby.article.persistence.repository.ArticleRepository
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.optionals.getOrNull
 
 @Service
@@ -15,7 +14,6 @@ class ArticleService(
 	fun getArticleById(id: Long) =
 		articleRepository.findById(id).getOrNull() ?: throw NoSuchElementException("No Article with id $id")
 
-	@Transactional
 	fun createArticle(incomingArticle: ArticleEntity) = articleRepository.save(incomingArticle)
 
 	fun updateArticle(id: Long, incoming: ArticleEntity): ArticleEntity {
@@ -34,8 +32,6 @@ class ArticleService(
 		return articleRepository.save(update)
 	}
 
-	@Transactional
-	fun deleteArticle(id: Long) {
-		articleRepository.deleteById(id)
-	}
+	fun deleteArticle(id: Long) = articleRepository.deleteById(id)
+
 }

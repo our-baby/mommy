@@ -8,11 +8,10 @@ data class BookmarkResponseDto(
 	val article: ArticleResponseDto,
 	val member: Long, // TODO: Change to MemberResponseDto
 ) {
-	companion object Factory {
-		fun fromEntity(bookmarkEntity: BookmarkEntity) = BookmarkResponseDto(
-			id = bookmarkEntity.id,
-			article = ArticleResponseDto.fromEntity(bookmarkEntity.article),
-			member = bookmarkEntity.member, // TODO: MemberResponseDto.fromEntity(bookmarkEntity.member)
-		)
+	constructor (bookmarkEntity: BookmarkEntity) : this(
+		bookmarkEntity.id,
+		ArticleResponseDto(bookmarkEntity.article),
+		bookmarkEntity.member,
+	) {
 	}
 }

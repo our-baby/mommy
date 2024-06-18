@@ -16,21 +16,21 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/articleTags")
-class ArticleTagController(private val articleTagService: ArticleTagService) {
+class ArticleTagController(
+	private val articleTagService: ArticleTagService,
+) {
 
 	@GetMapping
-	fun getAllArticleTags(): List<ArticleTagResponseDto> =
-		articleTagService.getAllArticleTags().map { it -> ArticleTagResponseDto.fromEntity(it) }
+	fun getAllArticleTags() =
+		articleTagService.getAllArticleTags().map { ArticleTagResponseDto(it) }
 
 	@GetMapping("/tags/{id}")
-	fun getTagsByArticleId(@PathVariable id: Long): List<TagResponseDto> {
-		return articleTagService.getTagsByArticleId(id).map { it -> TagResponseDto.fromEntity(it) }
-	}
+	fun getTagsByArticleId(@PathVariable id: Long) =
+		articleTagService.getTagsByArticleId(id).map { TagResponseDto(it) }
 
 	@GetMapping("/articles/{id}")
-	fun getArticlesByTagId(@PathVariable id: Long): List<ArticleResponseDto> {
-		return articleTagService.getArticlesByTagId(id).map { it -> ArticleResponseDto.fromEntity(it) }
-	}
+	fun getArticlesByTagId(@PathVariable id: Long) =
+		articleTagService.getArticlesByTagId(id).map { ArticleResponseDto(it) }
 
 	@PostMapping
 	fun createArticleTag(@RequestBody articleTagRequestDto: ArticleTagRequestDto) =

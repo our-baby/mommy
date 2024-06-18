@@ -7,7 +7,6 @@ import com.highschool.ourbaby.articleTag.persistence.repository.ArticleTagReposi
 import com.highschool.ourbaby.tag.persistence.entity.TagEntity
 import com.highschool.ourbaby.tag.service.TagService
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ArticleTagService(
@@ -25,15 +24,13 @@ class ArticleTagService(
 		return articleTagRepository.findTagsByArticleId(id).map { it -> it.tag }
 	}
 
-	@Transactional
 	fun createArticleTag(articleId: Long, tagId: Long): ArticleTagEntity {
 		val article = articleService.getArticleById(articleId)
 		val tag = tagService.getTagById(tagId)
 		return articleTagRepository.save(ArticleTagEntity(article = article, tag = tag))
 	}
 
-	@Transactional
-	fun deleteArticleTag(articleId: Long, tagId: Long) {
+	fun deleteArticleTag(articleId: Long, tagId: Long) =
 		articleTagRepository.deleteByArticleIdAndTagId(articleId, tagId)
-	}
+
 }

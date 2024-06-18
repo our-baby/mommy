@@ -14,23 +14,25 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/provisions")
-class ProvisionController(private val provisionService: ProvisionService) {
+class ProvisionController(
+	private val provisionService: ProvisionService,
+) {
 	@GetMapping
-	fun getAllProvisions() = provisionService.getAllProvisions().map { it -> ProvisionResponseDto.fromEntity(it) }
+	fun getAllProvisions() = provisionService.getAllProvisions().map { ProvisionResponseDto(it) }
 
 	@GetMapping("/{id}")
 	fun getProvisionById(@PathVariable id: Long) =
-		ProvisionResponseDto.fromEntity(provisionService.getProvisionById(id))
+		ProvisionResponseDto(provisionService.getProvisionById(id))
 
 	@PostMapping
 	fun createProvision(@RequestBody provisionRequestDto: ProvisionRequestDto) =
-		ProvisionResponseDto.fromEntity(provisionService.createProvision(provisionRequestDto.toEntity()))
+		ProvisionResponseDto(provisionService.createProvision(provisionRequestDto.toEntity()))
 
 	@PutMapping("/{id}")
 	fun updateProvision(
 		@PathVariable(name = "id", required = true) id: Long,
 		@RequestBody provisionRequestDto: ProvisionRequestDto
-	) = ProvisionResponseDto.fromEntity(provisionService.updateProvision(id, provisionRequestDto.toEntity()))
+	) = ProvisionResponseDto(provisionService.updateProvision(id, provisionRequestDto.toEntity()))
 
 	@DeleteMapping("/{id}")
 	fun deleteProvision(@PathVariable id: Long) =

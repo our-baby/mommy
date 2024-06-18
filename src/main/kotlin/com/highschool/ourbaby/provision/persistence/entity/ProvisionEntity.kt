@@ -1,7 +1,6 @@
 package com.highschool.ourbaby.provision.persistence.entity
 
 import com.highschool.ourbaby.core.persistence.entity.BaseEntity
-import com.highschool.ourbaby.provision.dto.ProvisionResponseDto
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
