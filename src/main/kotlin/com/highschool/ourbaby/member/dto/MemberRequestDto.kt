@@ -1,20 +1,19 @@
 package com.highschool.ourbaby.member.dto
 
+import com.highschool.ourbaby.article.persistence.entity.ArticleEntity
 import com.highschool.ourbaby.member.domain.JoinType
 import com.highschool.ourbaby.member.persistence.entity.MemberEntity
 
-data class MemberResponseDto(
-	val id: Long,
+data class MemberRequestDto(
 	val email: String,
 	val name: String,
 	val nickname: String,
 	val joinType: JoinType,
 ) {
-	constructor(memberEntity: MemberEntity) : this(
-		memberEntity.id,
-		memberEntity.email,
-		memberEntity.name,
-		memberEntity.nickname,
-		memberEntity.joinType,
+	fun toEntity() = MemberEntity(
+		email = this.email,
+		name = this.name,
+		nickname = this.nickname,
+		joinType = this.joinType,
 	)
 }

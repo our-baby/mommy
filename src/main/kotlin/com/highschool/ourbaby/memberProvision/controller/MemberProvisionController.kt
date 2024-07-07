@@ -23,10 +23,12 @@ class MemberProvisionController(
 
 	@PostMapping
 	fun createMemberProvision(@RequestBody memberProvisionRequestDto: MemberProvisionRequestDto) =
-		MemberProvisionResponseDto(memberProvisionService.createMemberProvision(
-			memberProvisionRequestDto.memberId,
-			memberProvisionRequestDto.provisionId
-		))
+		MemberProvisionResponseDto(
+			memberProvisionService.createMemberProvision(
+				memberProvisionRequestDto.memberId,
+				memberProvisionRequestDto.provisionId
+			)
+		)
 
 	@DeleteMapping("/{id}")
 	fun deleteMemberProvision(@PathVariable id: Long) = memberProvisionService.deleteByMemberId(id)

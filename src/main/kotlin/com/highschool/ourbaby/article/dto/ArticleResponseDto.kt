@@ -30,6 +30,4 @@ data class ArticleResponseDto(
 		articleEntity.updatedAt
 	) {
 	}
-
-
 }

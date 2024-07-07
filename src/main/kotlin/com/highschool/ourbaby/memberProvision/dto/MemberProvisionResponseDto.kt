@@ -8,8 +8,8 @@ data class MemberProvisionResponseDto(
 	val id: Long,
 	val member: MemberResponseDto,
 	val provision: ProvisionResponseDto,
-){
-	constructor(memberProvisionEntity: MemberProvisionEntity): this(
+) {
+	constructor(memberProvisionEntity: MemberProvisionEntity) : this(
 		memberProvisionEntity.id,
 		MemberResponseDto(memberProvisionEntity.member),
 		ProvisionResponseDto(memberProvisionEntity.provision),

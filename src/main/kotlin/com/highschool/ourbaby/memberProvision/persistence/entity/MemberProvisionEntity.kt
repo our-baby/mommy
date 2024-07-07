@@ -14,7 +14,7 @@ import jakarta.persistence.JoinColumn
 
 @Entity
 @Table(name = "member_provision")
-class MemberProvisionEntity (
+class MemberProvisionEntity(
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	val id: Long = 0,
@@ -26,4 +26,4 @@ class MemberProvisionEntity (
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "provision_id")
 	val provision: ProvisionEntity
-): BaseEntity()
+) : BaseEntity()
