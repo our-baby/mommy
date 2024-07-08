@@ -6,6 +6,7 @@ import com.highschool.ourbaby.memberProvision.persistence.repository.MemberProvi
 import com.highschool.ourbaby.provision.persistence.entity.ProvisionEntity
 import com.highschool.ourbaby.provision.service.ProvisionService
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class MemberProvisionService(
@@ -23,5 +24,7 @@ class MemberProvisionService(
 		return memberProvisionRepository.save(MemberProvisionEntity(member = member, provision = provision))
 	}
 
-	fun deleteByMemberId(id: Long) = memberProvisionRepository.deleteByMemberId(id)
+	@Transactional
+	fun deleteMemberProvision(memberId: Long, provisionId: Long) =
+		memberProvisionRepository.deleteByMemberIdAndProvisionId(memberId, provisionId)
 }
