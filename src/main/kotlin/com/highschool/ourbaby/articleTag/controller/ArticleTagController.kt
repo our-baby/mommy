@@ -34,7 +34,12 @@ class ArticleTagController(
 
 	@PostMapping
 	fun createArticleTag(@RequestBody articleTagRequestDto: ArticleTagRequestDto) =
-		articleTagService.createArticleTag(articleTagRequestDto.articleId, articleTagRequestDto.tagId)
+		ArticleTagResponseDto(
+			articleTagService.createArticleTag(
+				articleTagRequestDto.articleId,
+				articleTagRequestDto.tagId
+			)
+		)
 
 	@DeleteMapping
 	fun deleteArticleTag(@RequestParam articleId: Long, @RequestParam tagId: Long) =
