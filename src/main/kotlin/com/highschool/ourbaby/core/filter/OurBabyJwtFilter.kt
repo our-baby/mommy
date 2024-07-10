@@ -13,55 +13,53 @@ import org.springframework.security.core.userdetails.User
 import org.springframework.web.filter.OncePerRequestFilter
 
 class OurBabyJwtFilter(
-	private val jwtService: JwtService,
+    private val jwtService: JwtService,
 
-	private val memberService: MemberService
+    private val memberService: MemberService,
 ) : OncePerRequestFilter() {
-	override fun doFilterInternal(
-		request: HttpServletRequest,
-		response: HttpServletResponse,
-		filterChain: FilterChain
-	) {
-		if (request.requestURI.equals("/test/**")) {
-			filterChain.doFilter(request, response)
-			return;
-		}
+    override fun doFilterInternal(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        filterChain: FilterChain,
+    ) {
+//        if (request.requestURI.equals("/test/hello") || request.requestURI.equals("/api/members/sign-in")) {
+//            filterChain.doFilter(request, response)
+//        }
+        extractAccessToken(request)
+            ?.let {
+                authenticateUserFromAccessToken(request, response, filterChain, it)
+            }
+            ?: filterChain.doFilter(request, response)
+    }
 
-		extractAccessToken(request)
-			?.let {
-				authenticateUserFromAccessToken(request, response, filterChain, it)
-			}
-			?: throw BadRequestException("사용자 로그인 토큰이 없습니다.")
-	}
+    private fun authenticateUserFromAccessToken(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        filterChain: FilterChain,
+        accessToken: String,
+    ) {
+        val userId = jwtService.extractClaims(accessToken).id.toLong()
 
-	private fun authenticateUserFromAccessToken(
-		request: HttpServletRequest,
-		response: HttpServletResponse,
-		filterChain: FilterChain,
-		accessToken: String
-	) {
-		val userId = jwtService.extractClaims(accessToken).id.toLong()
+        memberService.getMemberById(userId)
+            .also {
+                val authentication = getAuthentication(it)
 
-		memberService.getMemberById(userId)
-			.also {
-				val authentication = getAuthentication(it)
+                SecurityContextHolder.getContext().authentication = authentication
+            }
 
-				SecurityContextHolder.getContext().authentication = authentication
-			}
+        filterChain.doFilter(request, response)
+    }
 
-		filterChain.doFilter(request, response)
-	}
+    private fun getAuthentication(it: MemberEntity) =
+        UsernamePasswordAuthenticationToken(
+            User.builder()
+                .username(it.id.toString())
+                .roles("USER")
+                .build(),
+            null
+        )
 
-	private fun getAuthentication(it: MemberEntity) =
-		UsernamePasswordAuthenticationToken(
-			User.builder()
-				.username(it.id.toString())
-				.roles("USER")
-				.build(),
-			null
-		)
-
-	private fun extractAccessToken(request: HttpServletRequest): String? {
-		return request.getHeader("Authorization")
-	}
+    private fun extractAccessToken(request: HttpServletRequest): String? {
+        return request.getHeader("Authorization")
+    }
 }
