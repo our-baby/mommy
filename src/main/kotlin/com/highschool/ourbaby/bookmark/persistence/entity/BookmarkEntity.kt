@@ -2,6 +2,7 @@ package com.highschool.ourbaby.bookmark.persistence.entity
 
 import com.highschool.ourbaby.article.persistence.entity.ArticleEntity
 import com.highschool.ourbaby.core.persistence.entity.BaseEntity
+import com.highschool.ourbaby.member.persistence.entity.MemberEntity
 import jakarta.persistence.*
 import jakarta.persistence.FetchType.LAZY
 import jakarta.persistence.GenerationType.IDENTITY
@@ -17,8 +18,7 @@ class BookmarkEntity(
 	@JoinColumn(name = "article_id")
 	val article: ArticleEntity,
 
-	// TODO: @ManyToOne(fetch = FetchType.LAZY)
-	// TODO: JoinColumn(name = "member_id")
-	@Column(name = "member_id")
-	val member: Long = 0, // TODO: Long -> MemberEntity
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "member_id")
+	val member: MemberEntity,
 ) : BaseEntity()

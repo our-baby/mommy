@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.query.Param
 
 interface SearchHistoryRepository : JpaRepository<SearchHistoryEntity, Long> {
-	fun findByMember(@Param("memberId") memberId: Long): List<SearchHistoryEntity>
+	fun findByMemberId(@Param("memberId") memberId: Long): List<SearchHistoryEntity>
 
-	fun deleteByMember(@Param("memberId") memberId: Long)
+	fun deleteByMemberId(@Param("memberId") memberId: Long)
 }
