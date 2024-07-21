@@ -24,7 +24,6 @@ class ArticleEntity(
 	val linkHits: Int = 0,
 	@Column(name = "is_published")
 	val isPublished: Boolean = false,
-
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "category_id")
 	val category: CategoryEntity,
