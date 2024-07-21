@@ -6,9 +6,8 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
 interface BookmarkRepository : JpaRepository<BookmarkEntity, Long> {
-	// TODO: deleteByArticleIdAndMember -> deleteByArticleIdAndMemberId
-	fun deleteByArticleIdAndMember(articleId: Long, memberId: Long)
+	fun deleteByArticleIdAndMemberId(articleId: Long, memberId: Long)
 
-	@Query("SELECT bm FROM BookmarkEntity bm JOIN FETCH bm.article WHERE bm.member = :memberId")
+	@Query("SELECT bm FROM BookmarkEntity bm JOIN FETCH bm.article WHERE bm.member.id = :memberId")
 	fun findArticlesByMemberId(@Param("memberId") memberId: Long): List<BookmarkEntity>
 }
