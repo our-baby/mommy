@@ -4,7 +4,7 @@ import com.highschool.ourbaby.article.dto.ArticleResponseDto
 import com.highschool.ourbaby.articleTag.dto.ArticleTagRequestDto
 import com.highschool.ourbaby.articleTag.dto.ArticleTagResponseDto
 import com.highschool.ourbaby.articleTag.service.ArticleTagService
-import com.highschool.ourbaby.tag.dto.TagResponseDto
+import com.highschool.ourbaby.category.dto.CategoryResponseDto
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -26,7 +26,7 @@ class ArticleTagController(
 
 	@GetMapping("/tags/{id}")
 	fun getTagsByArticleId(@PathVariable id: Long) =
-		articleTagService.getTagsByArticleId(id).map { TagResponseDto(it) }
+		articleTagService.getTagsByArticleId(id).map { CategoryResponseDto(it) }
 
 	@GetMapping("/articles/{id}")
 	fun getArticlesByTagId(@PathVariable id: Long) =

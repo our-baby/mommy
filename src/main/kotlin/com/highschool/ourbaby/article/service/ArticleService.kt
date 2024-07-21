@@ -2,6 +2,7 @@ package com.highschool.ourbaby.article.service
 
 import com.highschool.ourbaby.article.persistence.entity.ArticleEntity
 import com.highschool.ourbaby.article.persistence.repository.ArticleRepository
+import com.highschool.ourbaby.category.persistence.entity.CategoryEntity
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -14,19 +15,50 @@ class ArticleService(
 	fun getArticleById(id: Long) =
 		articleRepository.findById(id).getOrNull() ?: throw NoSuchElementException("No Article with id $id")
 
-	fun createArticle(incomingArticle: ArticleEntity) = articleRepository.save(incomingArticle)
+	fun getArticlesByCategoryId(id: Long): List<ArticleEntity> = articleRepository.findByCategoryId(id)
 
-	fun updateArticle(id: Long, incoming: ArticleEntity): ArticleEntity {
+
+	fun createArticle(
+		title: String,
+		summary: String,
+		link: String,
+		hits: Int,
+		linkHits: Int,
+		isPublished: Boolean,
+		categoryEntity: CategoryEntity,
+	): ArticleEntity {
+		val article = ArticleEntity(
+			title = title,
+			summary = summary,
+			link = link,
+			hits = hits,
+			linkHits = linkHits,
+			isPublished = isPublished,
+			category = categoryEntity,
+		)
+		return articleRepository.save(article)
+	}
+
+	fun updateArticle(
+		id: Long,
+		title: String,
+		summary: String,
+		link: String,
+		hits: Int,
+		linkHits: Int,
+		isPublished: Boolean,
+		categoryEntity: CategoryEntity?
+	): ArticleEntity {
 		val origin = getArticleById(id)
 		val update = ArticleEntity(
 			id = origin.id,
-			title = incoming.title,
-			summary = incoming.summary,
-			link = incoming.link,
-			menuTag = incoming.menuTag,
-			hits = incoming.hits,
-			linkHits = incoming.linkHits,
-			isPublished = incoming.isPublished,
+			title = title,
+			summary = summary,
+			link = link,
+			hits = hits,
+			linkHits = linkHits,
+			isPublished = isPublished,
+			category = categoryEntity ?: origin.category,
 		)
 		update.createdAt = origin.createdAt
 		return articleRepository.save(update)

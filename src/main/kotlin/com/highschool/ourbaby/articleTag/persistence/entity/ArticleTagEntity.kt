@@ -2,7 +2,7 @@ package com.highschool.ourbaby.articleTag.persistence.entity
 
 import com.highschool.ourbaby.article.persistence.entity.ArticleEntity
 import com.highschool.ourbaby.core.persistence.entity.BaseEntity
-import com.highschool.ourbaby.tag.persistence.entity.TagEntity
+import com.highschool.ourbaby.category.persistence.entity.CategoryEntity
 import jakarta.persistence.*
 import jakarta.persistence.FetchType.LAZY
 import jakarta.persistence.GenerationType.IDENTITY
@@ -20,5 +20,5 @@ class ArticleTagEntity(
 
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "tag_id")
-	var tag: TagEntity,
+	var tag: CategoryEntity,
 ) : BaseEntity()

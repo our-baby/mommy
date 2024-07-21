@@ -6,10 +6,19 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.core.AuthenticationException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.client.HttpClientErrorException.BadRequest
 
 
 @RestControllerAdvice
 class GlobalControllerAdvice {
+    @ExceptionHandler
+    fun handleBadRequest(ex: BadRequestException): ResponseEntity<ExceptionResponseDto> {
+        val errorDto = ExceptionResponseDto(
+            BAD_REQUEST.value(),
+            ex.message,
+        )
+        return ResponseEntity(errorDto, BAD_REQUEST)
+    }
     @ExceptionHandler
     fun handleNoSuchElement(ex: NoSuchElementException): ResponseEntity<ExceptionResponseDto> {
         val errorDto = ExceptionResponseDto(

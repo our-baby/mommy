@@ -2,6 +2,10 @@ package com.highschool.ourbaby.searchHistory
 
 import com.highschool.ourbaby.Mock
 import com.highschool.ourbaby.SpringDataConfig
+import com.highschool.ourbaby.member.external.feign.oauth.NaverOAuthFeign
+import com.highschool.ourbaby.member.persistence.repository.MemberRepository
+import com.highschool.ourbaby.member.service.JwtService
+import com.highschool.ourbaby.member.service.MemberService
 import com.highschool.ourbaby.searchHistory.persistence.entity.SearchHistoryEntity
 import com.highschool.ourbaby.searchHistory.persistence.repository.SearchHistoryRepository
 import com.highschool.ourbaby.searchHistory.service.SearchHistoryService
@@ -18,8 +22,12 @@ import org.springframework.test.context.ContextConfiguration
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class SearchHistoryServiceSpec(
 	private val searchHistoryRepository: SearchHistoryRepository,
+	private val memberRepository: MemberRepository,
+	private val naverOAuthFeign: NaverOAuthFeign,
+	private val jwtService: JwtService,
 ) : ExpectSpec() {
-	private val searchHistoryService = SearchHistoryService(searchHistoryRepository)
+	private val memberService = MemberService(memberRepository, naverOAuthFeign, jwtService)
+	private val searchHistoryService = SearchHistoryService(memberService, searchHistoryRepository)
 
 	init {
 		context("검색기록 추가") {
@@ -40,7 +48,7 @@ class SearchHistoryServiceSpec(
 
 	fun createSearchHistory(memberId: Long): ArrayList<SearchHistoryEntity> {
 		val searchHistoryList =
-			arrayListOf<SearchHistoryEntity>(Mock.searchHistory(memberId), Mock.searchHistory(memberId))
+			arrayListOf<SearchHistoryEntity>(Mock.searchHistory(), Mock.searchHistory())
 		val entityList: ArrayList<SearchHistoryEntity> = arrayListOf<SearchHistoryEntity>()
 		for (searchHistory in searchHistoryList) {
 			entityList.addLast(searchHistoryRepository.save(searchHistory))

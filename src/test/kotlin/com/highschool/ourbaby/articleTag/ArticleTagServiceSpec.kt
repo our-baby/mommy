@@ -7,9 +7,9 @@ import com.highschool.ourbaby.article.persistence.repository.ArticleRepository
 import com.highschool.ourbaby.article.service.ArticleService
 import com.highschool.ourbaby.articleTag.persistence.repository.ArticleTagRepository
 import com.highschool.ourbaby.articleTag.service.ArticleTagService
-import com.highschool.ourbaby.tag.persistence.entity.TagEntity
-import com.highschool.ourbaby.tag.persistence.repository.TagRepository
-import com.highschool.ourbaby.tag.service.TagService
+import com.highschool.ourbaby.category.persistence.entity.CategoryEntity
+import com.highschool.ourbaby.category.persistence.repository.CategoryRepository
+import com.highschool.ourbaby.category.service.CategoryService
 import io.kotest.core.spec.style.ExpectSpec
 import io.kotest.matchers.shouldBe
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -23,17 +23,17 @@ import org.springframework.test.context.ContextConfiguration
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class ArticleTagServiceSpec(
 	private val articleRepository: ArticleRepository,
-	private val tagRepository: TagRepository,
+	private val categoryRepository: CategoryRepository,
 	private val articleTagRepository: ArticleTagRepository,
 ) : ExpectSpec() {
 	private val articleService = ArticleService(articleRepository)
-	private val tagService = TagService(tagRepository)
-	private val articleTagService = ArticleTagService(articleService, tagService, articleTagRepository)
+	private val categoryService = CategoryService(categoryRepository)
+	private val articleTagService = ArticleTagService(articleService, categoryService, articleTagRepository)
 
 	init {
 		context("게시글에 태그를 추가할 때") {
 			val article = createArticle()
-			val tag = createTag()
+			val tag = createCategory()
 			createArticleTag(article.id, tag.id)
 			expect("게시글 아이디로 조회하면 관련 태그들이 조회된다.") {
 				val tagList = articleTagService.getTagsByArticleId(article.id)
@@ -47,14 +47,23 @@ class ArticleTagServiceSpec(
 			}
 		}
 	}
+
 	fun createArticle(): ArticleEntity {
 		val article = Mock.article()
-		return articleService.createArticle(article)
+		return articleService.createArticle(
+			article.title,
+			article.summary,
+			article.link,
+			article.hits,
+			article.linkHits,
+			article.isPublished,
+			article.category
+		)
 	}
 
-	fun createTag(): TagEntity {
-		val tag = Mock.tag()
-		return tagService.createTag(tag)
+	fun createCategory(): CategoryEntity {
+		val category = Mock.category()
+		return categoryService.createCategory(category)
 	}
 
 	fun createArticleTag(articleId: Long, tagId: Long) = articleTagService.createArticleTag(articleId, tagId)

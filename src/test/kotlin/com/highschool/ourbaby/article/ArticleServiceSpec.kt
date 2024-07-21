@@ -36,8 +36,18 @@ class ArticleServiceSpec(
 			expect("입력한 정보 그대로 게시글이 수정된다.") {
 				val article = Mock.article()
 				var newArticle = createNewArticle(article)
+				val newCategory = Mock.category()
 				val updatedArticle = Mock.article()
-				newArticle = articleService.updateArticle(newArticle.id, updatedArticle)
+				newArticle = articleService.updateArticle(
+					newArticle.id,
+					updatedArticle.title,
+					updatedArticle.summary,
+					updatedArticle.link,
+					updatedArticle.hits,
+					updatedArticle.linkHits,
+					updatedArticle.isPublished,
+					newCategory,
+				)
 				validate(newArticle, updatedArticle)
 			}
 		}
@@ -69,7 +79,15 @@ class ArticleServiceSpec(
 		}
 	}
 
-	fun createNewArticle(article: ArticleEntity) = articleService.createArticle(article)
+	fun createNewArticle(article: ArticleEntity) = articleService.createArticle(
+		article.title,
+		article.summary,
+		article.link,
+		article.hits,
+		article.linkHits,
+		article.isPublished,
+		article.category
+	)
 
 	fun validate(from: ArticleEntity, to: ArticleEntity) {
 		from.title shouldBe to.title
@@ -77,7 +95,6 @@ class ArticleServiceSpec(
 		from.summary shouldBe to.summary
 		from.link shouldBe to.link
 		from.hits shouldBe to.hits
-		from.menuTag shouldBe to.menuTag
 		from.hits shouldBe to.hits
 		from.linkHits shouldBe to.linkHits
 		from.isPublished shouldBe to.isPublished
