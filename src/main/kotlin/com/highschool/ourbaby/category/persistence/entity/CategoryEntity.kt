@@ -1,4 +1,4 @@
-package com.highschool.ourbaby.tag.persistence.entity
+package com.highschool.ourbaby.category.persistence.entity
 
 import com.highschool.ourbaby.core.persistence.entity.BaseEntity
 import jakarta.persistence.Column
@@ -9,8 +9,8 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "tag")
-class TagEntity(
+@Table(name = "category")
+class CategoryEntity(
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	val id: Long = 0,

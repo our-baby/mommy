@@ -1,12 +1,10 @@
 package com.highschool.ourbaby.article.persistence.entity
 
+import com.highschool.ourbaby.category.persistence.entity.CategoryEntity
 import com.highschool.ourbaby.core.persistence.entity.BaseEntity
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
+import jakarta.persistence.*
 import jakarta.persistence.GenerationType.IDENTITY
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.FetchType.LAZY
 
 @Entity
 @Table(name = "article")
@@ -20,12 +18,13 @@ class ArticleEntity(
 	val summary: String,
 	@Column(nullable = false, columnDefinition = "TEXT")
 	val link: String,
-	@Column(name = "menu_tag", nullable = false, length = 10)
-	val menuTag: String,
 	@Column(nullable = false)
 	val hits: Int = 0,
 	@Column(name = "link_hits", nullable = false)
 	val linkHits: Int = 0,
 	@Column(name = "is_published")
 	val isPublished: Boolean = false,
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "category_id")
+	val category: CategoryEntity,
 ) : BaseEntity()
