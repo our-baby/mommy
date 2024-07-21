@@ -13,7 +13,7 @@ class SearchHistoryEntity(
 	@GeneratedValue(strategy = IDENTITY)
 	val id: Long = 0,
 
-	@Column(name = "keyword")
+	@Column(name = "keyword", nullable = false)
 	val keyword: String,
 
 	@ManyToOne(fetch = LAZY)
