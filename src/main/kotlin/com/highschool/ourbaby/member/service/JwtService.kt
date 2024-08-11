@@ -13,49 +13,50 @@ import javax.crypto.SecretKey
 class JwtService(
     private val jwtConfig: JwtConfig,
 ) {
-    fun createAccessToken(userId: Long): String {
-        val now = Date()
-
-        return Jwts.builder()
-            .claims(
-                Jwts.claims()
-                    .subject(userId.toString())
-                    .build()
-            )
-            .issuer("mommy")
-            .issuedAt(now)
-            .expiration(Date(now.time + jwtConfig.accessTokenExpirationPeriod))
-            .signWith(getSigningKey())
-            .compact();
-    }
+    fun createAccessToken(
+        now: Date,
+        userId: Long,
+    ) = Jwts
+        .builder()
+        .claims(
+            Jwts
+                .claims()
+                .subject(userId.toString())
+                .build(),
+        ).issuer("mommy")
+        .issuedAt(now)
+        .expiration(Date(now.time + jwtConfig.accessTokenExpirationPeriod))
+        .signWith(getSigningKey())
+        .compact()
 
     private fun getSigningKey(): SecretKey {
         val keyBytes = Decoders.BASE64.decode(jwtConfig.secretKey)
 
-        return Keys.hmacShaKeyFor(keyBytes);
+        return Keys.hmacShaKeyFor(keyBytes)
     }
 
-    fun createRefreshToken(userId: Long): String {
-        val now = Date()
-
-        return Jwts.builder()
-            .claims(
-                Jwts.claims()
-                    .subject(userId.toString())
-                    .build()
-            )
-            .issuer("mommy")
-            .issuedAt(now)
-            .expiration(Date(now.time + jwtConfig.refreshTokenExpirationPeriod))
-            .signWith(getSigningKey())
-            .compact();
-    }
+    fun createRefreshToken(
+        now: Date,
+        userId: Long,
+    ) = Jwts
+        .builder()
+        .claims(
+            Jwts
+                .claims()
+                .subject(userId.toString())
+                .build(),
+        ).issuer("mommy")
+        .issuedAt(now)
+        .expiration(Date(now.time + jwtConfig.refreshTokenExpirationPeriod))
+        .signWith(getSigningKey())
+        .compact()
 
     fun extractClaims(token: String): Claims {
         check(token.startsWith("Bearer "))
 
         return runCatching {
-            Jwts.parser()
+            Jwts
+                .parser()
                 .verifyWith(getSigningKey())
                 .build()
                 .parseSignedClaims(token.replace("Bearer ", ""))

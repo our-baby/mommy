@@ -20,19 +20,29 @@ class MemberController(
     private val memberService: MemberService,
 ) {
     @PostMapping("sign-in")
-    fun getAuthenticationToken(@RequestHeader("certificated-token") certificatedToken: String) =
-        SignInResponseDto(memberService.getAuthenticationToken(certificatedToken))
+    fun getAuthenticationToken(
+        @RequestHeader("certificated-token") certificatedToken: String,
+    ): SignInResponseDto {
+        val token = memberService.getAuthenticationToken(certificatedToken)
+
+        return SignInResponseDto(
+            accessToken = token.accessToken,
+            refreshToken = token.refreshToken,
+        )
+    }
 
     @GetMapping
-    fun getAllMembers(): List<MemberResponseDto> =
-        memberService.getAllMembers().map { MemberResponseDto(it) }
+    fun getAllMembers(): List<MemberResponseDto> = memberService.getAllMembers().map { MemberResponseDto(it) }
 
     @GetMapping("/{id}")
-    fun getMemberById(@PathVariable id: Long) = MemberResponseDto(memberService.getMemberById(id))
+    fun getMemberById(
+        @PathVariable id: Long,
+    ) = MemberResponseDto(memberService.getMemberById(id))
 
     @PostMapping
-    fun createMember(@RequestBody memberRequestDto: MemberRequestDto) =
-        MemberResponseDto(memberService.createMember(memberRequestDto.toEntity()))
+    fun createMember(
+        @RequestBody memberRequestDto: MemberRequestDto,
+    ) = MemberResponseDto(memberService.createMember(memberRequestDto.toEntity()))
 
     @PutMapping("/{id}")
     fun updateMember(
@@ -41,5 +51,7 @@ class MemberController(
     ) = MemberResponseDto(memberService.updateMember(id, memberRequestDto.toEntity()))
 
     @DeleteMapping("/{id}")
-    fun deleteMember(@PathVariable id: Long) = memberService.deleteMember(id)
+    fun deleteMember(
+        @PathVariable id: Long,
+    ) = memberService.deleteMember(id)
 }
