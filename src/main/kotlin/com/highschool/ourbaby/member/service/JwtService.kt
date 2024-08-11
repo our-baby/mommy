@@ -6,7 +6,7 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.Date
 import javax.crypto.SecretKey
 
 @Service
@@ -16,18 +16,19 @@ class JwtService(
     fun createAccessToken(
         now: Date,
         userId: Long,
-    ) = Jwts
-        .builder()
-        .claims(
-            Jwts
-                .claims()
-                .subject(userId.toString())
-                .build(),
-        ).issuer("mommy")
-        .issuedAt(now)
-        .expiration(Date(now.time + jwtConfig.accessTokenExpirationPeriod))
-        .signWith(getSigningKey())
-        .compact()
+    ): String =
+        Jwts
+            .builder()
+            .claims(
+                Jwts
+                    .claims()
+                    .id(userId.toString())
+                    .build(),
+            ).issuer("mommy")
+            .issuedAt(now)
+            .expiration(Date(now.time + jwtConfig.accessTokenExpirationPeriod))
+            .signWith(getSigningKey())
+            .compact()
 
     private fun getSigningKey(): SecretKey {
         val keyBytes = Decoders.BASE64.decode(jwtConfig.secretKey)
@@ -38,18 +39,19 @@ class JwtService(
     fun createRefreshToken(
         now: Date,
         userId: Long,
-    ) = Jwts
-        .builder()
-        .claims(
-            Jwts
-                .claims()
-                .subject(userId.toString())
-                .build(),
-        ).issuer("mommy")
-        .issuedAt(now)
-        .expiration(Date(now.time + jwtConfig.refreshTokenExpirationPeriod))
-        .signWith(getSigningKey())
-        .compact()
+    ): String =
+        Jwts
+            .builder()
+            .claims(
+                Jwts
+                    .claims()
+                    .id(userId.toString())
+                    .build(),
+            ).issuer("mommy")
+            .issuedAt(now)
+            .expiration(Date(now.time + jwtConfig.refreshTokenExpirationPeriod))
+            .signWith(getSigningKey())
+            .compact()
 
     fun extractClaims(token: String): Claims {
         check(token.startsWith("Bearer "))
