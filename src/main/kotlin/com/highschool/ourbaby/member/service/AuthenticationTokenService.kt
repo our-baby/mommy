@@ -7,7 +7,7 @@ import java.util.Date
 class AuthenticationTokenService(
     val jwtService: JwtService,
 ) {
-    fun refreshToken(refreshToken: String) =
+    fun refreshToken(refreshToken: String): String =
         jwtService
             .extractClaims(refreshToken)
             .id
