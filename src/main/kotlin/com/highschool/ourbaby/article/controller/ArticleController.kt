@@ -5,6 +5,8 @@ import com.highschool.ourbaby.article.dto.ArticleResponseDto
 import com.highschool.ourbaby.article.service.ArticleService
 import com.highschool.ourbaby.category.service.CategoryService
 import com.highschool.ourbaby.core.exception.BadRequestException
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.client.HttpClientErrorException.BadRequest
 
 @RestController
 @RequestMapping("/api/articles")
@@ -23,7 +24,8 @@ class ArticleController(
 ) {
 
 	@GetMapping
-	fun getAllArticles() = articleService.getAllArticles().map { ArticleResponseDto(it) }
+	fun getAllArticles(pageable: Pageable): Page<ArticleResponseDto> =
+		articleService.getAllArticles(pageable).map { ArticleResponseDto(it) }
 
 
 	@GetMapping("/{id}")
@@ -31,8 +33,11 @@ class ArticleController(
 		ArticleResponseDto(articleService.getArticleById(id))
 
 	@GetMapping("/categories/{id}")
-	fun getArticlesByCategoryId(@PathVariable(value = "id", required = true) id: Long) =
-		articleService.getArticlesByCategoryId(id).map { ArticleResponseDto(it) }
+	fun getArticlesByCategoryId(
+		@PathVariable(value = "id", required = true) id: Long,
+		pageable: Pageable
+	): Page<ArticleResponseDto> =
+		articleService.getArticlesByCategoryId(id, pageable).map { ArticleResponseDto(it) }
 
 
 	@PostMapping

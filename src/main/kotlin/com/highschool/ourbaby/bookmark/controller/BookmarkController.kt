@@ -25,13 +25,9 @@ class BookmarkController(
 	fun getArticlesByMemberId(@PathVariable id: Long) = bookmarkService.getArticlesByMemberId(id)
 
 	@PostMapping
-	fun createBookmark(@RequestBody bookmarkRequestDto: BookmarkRequestDto): BookmarkResponseDto {
-		val bookmark = bookmarkService.createBookmark(
-			bookmarkRequestDto.articleId,
-			bookmarkRequestDto.memberId
-		)
-		return BookmarkResponseDto(bookmark)
-	}
+	fun createBookmark(@RequestBody bookmarkRequestDto: BookmarkRequestDto): BookmarkResponseDto =
+		BookmarkResponseDto(bookmarkService.createBookmark(bookmarkRequestDto.articleId, bookmarkRequestDto.memberId))
+
 
 	@DeleteMapping
 	fun deleteBookmark(@RequestParam articleId: Long, @RequestParam memberId: Long) {
