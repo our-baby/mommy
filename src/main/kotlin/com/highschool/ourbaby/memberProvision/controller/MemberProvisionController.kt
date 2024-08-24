@@ -1,9 +1,11 @@
 package com.highschool.ourbaby.memberProvision.controller
 
+import com.highschool.ourbaby.core.response.ApiResponse
 import com.highschool.ourbaby.memberProvision.dto.MemberProvisionRequestDto
 import com.highschool.ourbaby.memberProvision.dto.MemberProvisionResponseDto
 import com.highschool.ourbaby.memberProvision.service.MemberProvisionService
 import com.highschool.ourbaby.provision.dto.ProvisionResponseDto
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -21,15 +23,19 @@ class MemberProvisionController(
     @GetMapping("/{id}")
     fun getProvisionsByMemberId(
         @PathVariable id: Long,
-    ) = memberProvisionService.getProvisionsByMemberId(id).map { ProvisionResponseDto(it) }
+    ) = ResponseEntity.ok(ApiResponse(memberProvisionService.getProvisionsByMemberId(id).map { ProvisionResponseDto(it) }))
 
     @PostMapping
     fun createMemberProvision(
         @RequestBody memberProvisionRequestDto: MemberProvisionRequestDto,
-    ) = MemberProvisionResponseDto(
-        memberProvisionService.createMemberProvision(
-            memberProvisionRequestDto.memberId,
-            memberProvisionRequestDto.provisionId,
+    ) = ResponseEntity.ok(
+        ApiResponse(
+            MemberProvisionResponseDto(
+                memberProvisionService.createMemberProvision(
+                    memberProvisionRequestDto.memberId,
+                    memberProvisionRequestDto.provisionId,
+                ),
+            ),
         ),
     )
 
@@ -37,5 +43,5 @@ class MemberProvisionController(
     fun deleteMemberProvision(
         @RequestParam memberId: Long,
         @RequestParam provisionId: Long,
-    ) = memberProvisionService.deleteMemberProvision(memberId, provisionId)
+    ) = ResponseEntity.ok(ApiResponse(memberProvisionService.deleteMemberProvision(memberId, provisionId)))
 }

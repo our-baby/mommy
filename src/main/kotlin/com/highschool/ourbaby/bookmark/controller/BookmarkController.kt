@@ -3,6 +3,8 @@ package com.highschool.ourbaby.bookmark.controller
 import com.highschool.ourbaby.bookmark.dto.BookmarkRequestDto
 import com.highschool.ourbaby.bookmark.dto.BookmarkResponseDto
 import com.highschool.ourbaby.bookmark.service.BookmarkService
+import com.highschool.ourbaby.core.response.ApiResponse
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -18,29 +20,30 @@ class BookmarkController(
     val bookmarkService: BookmarkService,
 ) {
     @GetMapping
-    fun getAllBookmarks() = bookmarkService.getAllBookmark().map { BookmarkResponseDto(it) }
+    fun getAllBookmarks() = ResponseEntity.ok(ApiResponse(bookmarkService.getAllBookmark().map { BookmarkResponseDto(it) }))
 
     @GetMapping("/members/{id}")
     fun getArticlesByMemberId(
         @PathVariable id: Long,
-    ) = bookmarkService.getArticlesByMemberId(id)
+    ) = ResponseEntity.ok(ApiResponse(bookmarkService.getArticlesByMemberId(id)))
 
     @PostMapping
     fun createBookmark(
         @RequestBody bookmarkRequestDto: BookmarkRequestDto,
-    ): BookmarkResponseDto =
-        BookmarkResponseDto(
-            bookmarkService.createBookmark(
-                bookmarkRequestDto.articleId,
-                bookmarkRequestDto.memberId,
+    ) = ResponseEntity.ok(
+        ApiResponse(
+            BookmarkResponseDto(
+                bookmarkService.createBookmark(
+                    bookmarkRequestDto.articleId,
+                    bookmarkRequestDto.memberId,
+                ),
             ),
-        )
+        ),
+    )
 
     @DeleteMapping
     fun deleteBookmark(
         @RequestParam articleId: Long,
         @RequestParam memberId: Long,
-    ) {
-        bookmarkService.deleteBookmark(articleId, memberId)
-    }
+    ) = ResponseEntity.ok(ApiResponse(bookmarkService.deleteBookmark(articleId, memberId)))
 }
