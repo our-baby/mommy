@@ -1,9 +1,11 @@
 package com.highschool.ourbaby.member.controller
 
+import com.highschool.ourbaby.core.response.ApiResponse
 import com.highschool.ourbaby.member.dto.MemberResponseDto
 import com.highschool.ourbaby.member.dto.SignInResponseDto
 import com.highschool.ourbaby.member.dto.UpdateMemberRequestDto
 import com.highschool.ourbaby.member.service.MemberService
+import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.userdetails.User
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -24,12 +26,16 @@ class MemberController(
     @PostMapping("sign-in")
     fun getAuthenticationToken(
         @RequestHeader("certificated-token") certificatedToken: String,
-    ): SignInResponseDto {
+    ): ResponseEntity<ApiResponse<SignInResponseDto>> {
         val token = memberService.getAuthenticationToken(certificatedToken)
 
-        return SignInResponseDto(
-            accessToken = token.accessToken,
-            refreshToken = token.refreshToken,
+        return ResponseEntity.ok(
+            ApiResponse(
+                SignInResponseDto(
+                    accessToken = token.accessToken,
+                    refreshToken = token.refreshToken,
+                ),
+            ),
         )
     }
 
@@ -37,16 +43,20 @@ class MemberController(
     fun getMember(
         @AuthenticationPrincipal
         user: User,
-    ) = MemberResponseDto(memberService.getMemberById(user.username.toLong()))
+    ) = ResponseEntity.ok(
+        ApiResponse(MemberResponseDto(memberService.getMemberById(user.username.toLong()))),
+    )
 
     @PutMapping("/{id}")
     fun updateMember(
         @PathVariable id: Long,
         @RequestBody updateMemberRequestDto: UpdateMemberRequestDto,
-    ) = MemberResponseDto(memberService.updateMember(id, updateMemberRequestDto.toDomain()))
+    ) = ResponseEntity.ok(
+        ApiResponse(MemberResponseDto(memberService.updateMember(id, updateMemberRequestDto.toDomain()))),
+    )
 
     @DeleteMapping("/{id}")
     fun deleteMember(
         @PathVariable id: Long,
-    ) = memberService.deleteMember(id)
+    ) = ResponseEntity.ok(ApiResponse(memberService.deleteMember(id)))
 }

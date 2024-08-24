@@ -1,8 +1,10 @@
 package com.highschool.ourbaby.searchHistory.controller
 
+import com.highschool.ourbaby.core.response.ApiResponse
 import com.highschool.ourbaby.searchHistory.dto.SearchHistoryRequestDto
 import com.highschool.ourbaby.searchHistory.dto.SearchHistoryResponseDto
 import com.highschool.ourbaby.searchHistory.service.SearchHistoryService
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -19,25 +21,29 @@ class SearchHistoryController(
     @GetMapping("/{id}")
     fun getSearchHistoriesByMemberId(
         @PathVariable id: Long,
-    ) = searchHistoryService.getSearchHistoriesByMemberId(id).map { SearchHistoryResponseDto(it) }
+    ) = ResponseEntity.ok(ApiResponse(searchHistoryService.getSearchHistoriesByMemberId(id).map { SearchHistoryResponseDto(it) }))
 
     @PostMapping
     fun createSearchHistory(
         @RequestBody searchHistoryRequestDto: SearchHistoryRequestDto,
-    ) = SearchHistoryResponseDto(
-        searchHistoryService.createSearchHistory(
-            searchHistoryRequestDto.keyword,
-            searchHistoryRequestDto.memberId,
+    ) = ResponseEntity.ok(
+        ApiResponse(
+            SearchHistoryResponseDto(
+                searchHistoryService.createSearchHistory(
+                    searchHistoryRequestDto.keyword,
+                    searchHistoryRequestDto.memberId,
+                ),
+            ),
         ),
     )
 
     @DeleteMapping("/{id}")
     fun deleteById(
         @PathVariable id: Long,
-    ) = searchHistoryService.deleteById(id)
+    ) = ResponseEntity.ok(ApiResponse(searchHistoryService.deleteById(id)))
 
     @DeleteMapping("/members/{id}")
     fun deleteByMemberId(
         @PathVariable id: Long,
-    ) = searchHistoryService.deleteByMemberId(id)
+    ) = ResponseEntity.ok(ApiResponse(searchHistoryService.deleteByMemberId(id)))
 }
