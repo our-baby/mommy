@@ -22,9 +22,7 @@ class MemberService(
     }
 
     fun getAuthenticationToken(authCode: String): Token {
-        val naverUser =
-            "Bearer $authCode"
-                .let { naverOAuthFeign.getNaverUserInfo(it).toDomain() }
+        val naverUser = naverOAuthFeign.getNaverUserInfo(authCode).toDomain()
 
         val member =
             memberRepository.findByNameAndEmail(naverUser.name, naverUser.email)
