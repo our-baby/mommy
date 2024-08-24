@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestHeader
 
 @FeignClient(name = "NaverFeign", url = "\${feign.oauth.client.naver.user-info-url}")
 interface NaverOAuthFeign {
-    @GetMapping("v1/nid/me", consumes = ["application/xml"])
+    @GetMapping("v1/nid/me", consumes = ["application/json"])
     fun getNaverUserInfo(
         @RequestHeader("Authorization") authCode: String,
     ): NaverResponse

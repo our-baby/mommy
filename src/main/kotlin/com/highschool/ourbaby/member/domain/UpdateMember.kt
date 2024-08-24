@@ -1,6 +1,6 @@
 package com.highschool.ourbaby.member.domain
 
-class Member(
+class UpdateMember(
     val id: Long,
     val email: String,
     val name: String,

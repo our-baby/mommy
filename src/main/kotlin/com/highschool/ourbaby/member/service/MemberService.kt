@@ -2,6 +2,7 @@ package com.highschool.ourbaby.member.service
 
 import com.highschool.ourbaby.core.util.makeRandomString
 import com.highschool.ourbaby.member.domain.JoinType.NAVER
+import com.highschool.ourbaby.member.domain.UpdateMember
 import com.highschool.ourbaby.member.domain.oauth.Token
 import com.highschool.ourbaby.member.external.feign.oauth.NaverOAuthFeign
 import com.highschool.ourbaby.member.persistence.entity.MemberEntity
@@ -33,6 +34,7 @@ class MemberService(
                         name = naverUser.name,
                         nickname = makeRandomString(NICKNAME_LENGTH),
                         joinType = NAVER,
+                        profileImage = naverUser.profileImage,
                     ),
                 )
 
@@ -44,26 +46,26 @@ class MemberService(
         )
     }
 
-    fun getAllMembers(): List<MemberEntity> = memberRepository.findAll()
-
     fun getMemberById(id: Long): MemberEntity = memberRepository.findById(id).getOrElse { throw NoSuchElementException("존재하지 않는 유저입니다.") }
 
     fun createMember(incoming: MemberEntity) = memberRepository.save(incoming)
 
     fun updateMember(
         id: Long,
-        incoming: MemberEntity,
+        updateMember: UpdateMember,
     ): MemberEntity {
         val member = getMemberById(id)
-        val update =
+        val memberEntity =
             MemberEntity(
                 id = member.id,
-                email = incoming.email,
-                name = incoming.name,
-                nickname = incoming.nickname,
-                joinType = incoming.joinType,
+                email = updateMember.email,
+                name = updateMember.name,
+                nickname = updateMember.nickname,
+                joinType = updateMember.joinType,
+                profileImage = member.profileImage,
             )
-        return memberRepository.save(update)
+
+        return memberRepository.save(memberEntity)
     }
 
     fun deleteMember(id: Long) = memberRepository.deleteById(id)

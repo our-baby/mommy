@@ -6,15 +6,14 @@ import com.highschool.ourbaby.member.service.MemberService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.apache.coyote.BadRequestException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
 import org.springframework.web.filter.OncePerRequestFilter
 
 class OurBabyJwtFilter(
     private val jwtService: JwtService,
-
     private val memberService: MemberService,
 ) : OncePerRequestFilter() {
     override fun doFilterInternal(
@@ -40,7 +39,8 @@ class OurBabyJwtFilter(
     ) {
         val userId = jwtService.extractClaims(accessToken).id.toLong()
 
-        memberService.getMemberById(userId)
+        memberService
+            .getMemberById(userId)
             .also {
                 val authentication = getAuthentication(it)
 
@@ -52,14 +52,15 @@ class OurBabyJwtFilter(
 
     private fun getAuthentication(it: MemberEntity) =
         UsernamePasswordAuthenticationToken(
-            User.builder()
+            User
+                .builder()
                 .username(it.id.toString())
+                .password("password")
                 .roles("USER")
                 .build(),
-            null
+            "credentials",
+            listOf(SimpleGrantedAuthority("ROLE_USER")),
         )
 
-    private fun extractAccessToken(request: HttpServletRequest): String? {
-        return request.getHeader("Authorization")
-    }
+    private fun extractAccessToken(request: HttpServletRequest): String? = request.getHeader("Authorization")
 }
