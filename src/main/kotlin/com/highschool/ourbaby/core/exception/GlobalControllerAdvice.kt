@@ -6,43 +6,46 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.core.AuthenticationException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
-import org.springframework.web.client.HttpClientErrorException.BadRequest
-
 
 @RestControllerAdvice
 class GlobalControllerAdvice {
     @ExceptionHandler
     fun handleBadRequest(ex: BadRequestException): ResponseEntity<ExceptionResponseDto> {
-        val errorDto = ExceptionResponseDto(
-            BAD_REQUEST.value(),
-            ex.message,
-        )
+        val errorDto =
+            ExceptionResponseDto(
+                BAD_REQUEST.value(),
+                ex.message,
+            )
         return ResponseEntity(errorDto, BAD_REQUEST)
     }
+
     @ExceptionHandler
     fun handleNoSuchElement(ex: NoSuchElementException): ResponseEntity<ExceptionResponseDto> {
-        val errorDto = ExceptionResponseDto(
-            NOT_FOUND.value(),
-            ex.message,
-        )
+        val errorDto =
+            ExceptionResponseDto(
+                NOT_FOUND.value(),
+                ex.message,
+            )
         return ResponseEntity(errorDto, NOT_FOUND)
     }
 
     @ExceptionHandler
     fun handleAuthenticationException(ex: AuthenticationException): ResponseEntity<ExceptionResponseDto> {
-        val errorDto = ExceptionResponseDto(
-            BAD_REQUEST.value(),
-            ex.message,
-        )
+        val errorDto =
+            ExceptionResponseDto(
+                BAD_REQUEST.value(),
+                ex.message,
+            )
         return ResponseEntity(errorDto, BAD_REQUEST)
     }
 
     @ExceptionHandler
     fun handleRuntimeException(ex: RuntimeException): ResponseEntity<ExceptionResponseDto> {
-        val errorDto = ExceptionResponseDto(
-            INTERNAL_SERVER_ERROR.value(),
-            ex.message,
-        )
+        val errorDto =
+            ExceptionResponseDto(
+                INTERNAL_SERVER_ERROR.value(),
+                ex.message,
+            )
         return ResponseEntity(errorDto, INTERNAL_SERVER_ERROR)
     }
 }

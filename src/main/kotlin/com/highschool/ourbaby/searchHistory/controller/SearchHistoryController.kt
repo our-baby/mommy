@@ -14,24 +14,30 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/search-histories")
 class SearchHistoryController(
-	private val searchHistoryService: SearchHistoryService,
+    private val searchHistoryService: SearchHistoryService,
 ) {
-	@GetMapping("/{id}")
-	fun getSearchHistoriesByMemberId(@PathVariable id: Long) =
-		searchHistoryService.getSearchHistoriesByMemberId(id).map { SearchHistoryResponseDto(it) }
+    @GetMapping("/{id}")
+    fun getSearchHistoriesByMemberId(
+        @PathVariable id: Long,
+    ) = searchHistoryService.getSearchHistoriesByMemberId(id).map { SearchHistoryResponseDto(it) }
 
-	@PostMapping
-	fun createSearchHistory(@RequestBody searchHistoryRequestDto: SearchHistoryRequestDto) =
-		SearchHistoryResponseDto(
-			searchHistoryService.createSearchHistory(
-				searchHistoryRequestDto.keyword,
-				searchHistoryRequestDto.memberId
-			)
-		)
+    @PostMapping
+    fun createSearchHistory(
+        @RequestBody searchHistoryRequestDto: SearchHistoryRequestDto,
+    ) = SearchHistoryResponseDto(
+        searchHistoryService.createSearchHistory(
+            searchHistoryRequestDto.keyword,
+            searchHistoryRequestDto.memberId,
+        ),
+    )
 
-	@DeleteMapping("/{id}")
-	fun deleteById(@PathVariable id: Long) = searchHistoryService.deleteById(id)
+    @DeleteMapping("/{id}")
+    fun deleteById(
+        @PathVariable id: Long,
+    ) = searchHistoryService.deleteById(id)
 
-	@DeleteMapping("/members/{id}")
-	fun deleteByMemberId(@PathVariable id: Long) = searchHistoryService.deleteByMemberId(id)
+    @DeleteMapping("/members/{id}")
+    fun deleteByMemberId(
+        @PathVariable id: Long,
+    ) = searchHistoryService.deleteByMemberId(id)
 }

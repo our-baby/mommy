@@ -10,21 +10,30 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class MemberProvisionService(
-	private val memberService: MemberService,
-	private val provisionService: ProvisionService,
-	private val memberProvisionRepository: MemberProvisionRepository,
+    private val memberService: MemberService,
+    private val provisionService: ProvisionService,
+    private val memberProvisionRepository: MemberProvisionRepository,
 ) {
-	fun getProvisionsByMemberId(id: Long): List<ProvisionEntity> {
-		return memberProvisionRepository.findProvisionsByMemberId(id).map { it.provision }
-	}
+    fun getProvisionsByMemberId(id: Long): List<ProvisionEntity> =
+        memberProvisionRepository.findProvisionsByMemberId(id).map { it.provision }
 
-	fun createMemberProvision(memberId: Long, provisionId: Long): MemberProvisionEntity {
-		val member = memberService.getMemberById(memberId)
-		val provision = provisionService.getProvisionById(provisionId)
-		return memberProvisionRepository.save(MemberProvisionEntity(member = member, provision = provision))
-	}
+    fun createMemberProvision(
+        memberId: Long,
+        provisionId: Long,
+    ): MemberProvisionEntity {
+        val member = memberService.getMemberById(memberId)
+        val provision = provisionService.getProvisionById(provisionId)
+        return memberProvisionRepository.save(
+            MemberProvisionEntity(
+                member = member,
+                provision = provision,
+            ),
+        )
+    }
 
-	@Transactional
-	fun deleteMemberProvision(memberId: Long, provisionId: Long) =
-		memberProvisionRepository.deleteByMemberIdAndProvisionId(memberId, provisionId)
+    @Transactional
+    fun deleteMemberProvision(
+        memberId: Long,
+        provisionId: Long,
+    ) = memberProvisionRepository.deleteByMemberIdAndProvisionId(memberId, provisionId)
 }

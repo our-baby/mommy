@@ -15,22 +15,32 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/bookmarks")
 class BookmarkController(
-	val bookmarkService: BookmarkService,
+    val bookmarkService: BookmarkService,
 ) {
-	@GetMapping
-	fun getAllBookmarks() = bookmarkService.getAllBookmark().map { BookmarkResponseDto(it) }
+    @GetMapping
+    fun getAllBookmarks() = bookmarkService.getAllBookmark().map { BookmarkResponseDto(it) }
 
+    @GetMapping("/members/{id}")
+    fun getArticlesByMemberId(
+        @PathVariable id: Long,
+    ) = bookmarkService.getArticlesByMemberId(id)
 
-	@GetMapping("/members/{id}")
-	fun getArticlesByMemberId(@PathVariable id: Long) = bookmarkService.getArticlesByMemberId(id)
+    @PostMapping
+    fun createBookmark(
+        @RequestBody bookmarkRequestDto: BookmarkRequestDto,
+    ): BookmarkResponseDto =
+        BookmarkResponseDto(
+            bookmarkService.createBookmark(
+                bookmarkRequestDto.articleId,
+                bookmarkRequestDto.memberId,
+            ),
+        )
 
-	@PostMapping
-	fun createBookmark(@RequestBody bookmarkRequestDto: BookmarkRequestDto): BookmarkResponseDto =
-		BookmarkResponseDto(bookmarkService.createBookmark(bookmarkRequestDto.articleId, bookmarkRequestDto.memberId))
-
-
-	@DeleteMapping
-	fun deleteBookmark(@RequestParam articleId: Long, @RequestParam memberId: Long) {
-		bookmarkService.deleteBookmark(articleId, memberId)
-	}
+    @DeleteMapping
+    fun deleteBookmark(
+        @RequestParam articleId: Long,
+        @RequestParam memberId: Long,
+    ) {
+        bookmarkService.deleteBookmark(articleId, memberId)
+    }
 }
