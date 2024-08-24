@@ -11,9 +11,9 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "provision")
 class ProvisionEntity(
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	val id: Long = 0,
-	@Column(columnDefinition = "TEXT")
-	val description: String,
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    val id: Long = 0,
+    @Column(columnDefinition = "TEXT")
+    val description: String,
 ) : BaseEntity()

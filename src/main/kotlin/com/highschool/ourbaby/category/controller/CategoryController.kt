@@ -15,23 +15,29 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/categories")
 class CategoryController(
-	private val categoryService: CategoryService,
+    private val categoryService: CategoryService,
 ) {
-	@GetMapping
-	fun getAllTags() = categoryService.getAllCategories().map { CategoryResponseDto(it) }
+    @GetMapping
+    fun getAllTags() = categoryService.getAllCategories().map { CategoryResponseDto(it) }
 
-	@GetMapping("/{id}")
-	fun getTagById(@PathVariable(name = "id", required = true) id: Long) =
-		CategoryResponseDto(categoryService.getCategoryById(id))
+    @GetMapping("/{id}")
+    fun getTagById(
+        @PathVariable(name = "id", required = true) id: Long,
+    ) = CategoryResponseDto(categoryService.getCategoryById(id))
 
-	@PostMapping
-	fun createTag(@RequestBody categoryRequestDto: CategoryRequestDto) =
-		CategoryResponseDto(categoryService.createCategory(categoryRequestDto.toEntity()))
+    @PostMapping
+    fun createTag(
+        @RequestBody categoryRequestDto: CategoryRequestDto,
+    ) = CategoryResponseDto(categoryService.createCategory(categoryRequestDto.toEntity()))
 
-	@PutMapping("/{id}")
-	fun updateTag(@PathVariable id: Long, @RequestBody categoryRequestDto: CategoryRequestDto) =
-		CategoryResponseDto(categoryService.updateCategory(id, categoryRequestDto.toEntity()))
+    @PutMapping("/{id}")
+    fun updateTag(
+        @PathVariable id: Long,
+        @RequestBody categoryRequestDto: CategoryRequestDto,
+    ) = CategoryResponseDto(categoryService.updateCategory(id, categoryRequestDto.toEntity()))
 
-	@DeleteMapping("/{id}")
-	fun deleteTag(@PathVariable id: Long) = categoryService.deleteCategory(id)
+    @DeleteMapping("/{id}")
+    fun deleteTag(
+        @PathVariable id: Long,
+    ) = categoryService.deleteCategory(id)
 }

@@ -11,9 +11,9 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "category")
 class CategoryEntity(
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	val id: Long = 0,
-	@Column(nullable = false, length = 10)
-	val name: String,
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    val id: Long = 0,
+    @Column(nullable = false, length = 10)
+    val name: String,
 ) : BaseEntity()

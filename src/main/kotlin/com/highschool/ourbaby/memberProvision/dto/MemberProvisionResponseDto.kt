@@ -5,13 +5,13 @@ import com.highschool.ourbaby.memberProvision.persistence.entity.MemberProvision
 import com.highschool.ourbaby.provision.dto.ProvisionResponseDto
 
 data class MemberProvisionResponseDto(
-	val id: Long,
-	val member: MemberResponseDto,
-	val provision: ProvisionResponseDto,
+    val id: Long,
+    val member: MemberResponseDto,
+    val provision: ProvisionResponseDto,
 ) {
-	constructor(memberProvisionEntity: MemberProvisionEntity) : this(
-		memberProvisionEntity.id,
-		MemberResponseDto(memberProvisionEntity.member),
-		ProvisionResponseDto(memberProvisionEntity.provision),
-	)
+    constructor(memberProvisionEntity: MemberProvisionEntity) : this(
+        memberProvisionEntity.id,
+        MemberResponseDto(memberProvisionEntity.member),
+        ProvisionResponseDto(memberProvisionEntity.provision),
+    )
 }

@@ -8,19 +8,21 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class SearchHistoryService(
-	private val memberService: MemberService,
-	private val searchHistoryRepository: SearchHistoryRepository,
+    private val memberService: MemberService,
+    private val searchHistoryRepository: SearchHistoryRepository,
 ) {
+    fun getSearchHistoriesByMemberId(id: Long): List<SearchHistoryEntity> = searchHistoryRepository.findByMemberId(id)
 
-	fun getSearchHistoriesByMemberId(id: Long): List<SearchHistoryEntity> = searchHistoryRepository.findByMemberId(id)
+    fun createSearchHistory(
+        keyword: String,
+        memberId: Long,
+    ): SearchHistoryEntity {
+        val member = memberService.getMemberById(memberId)
+        return searchHistoryRepository.save(SearchHistoryEntity(keyword = keyword, member = member))
+    }
 
-	fun createSearchHistory(keyword: String, memberId: Long): SearchHistoryEntity {
-		val member = memberService.getMemberById(memberId)
-		return searchHistoryRepository.save(SearchHistoryEntity(keyword = keyword, member = member))
-	}
+    @Transactional
+    fun deleteByMemberId(id: Long) = searchHistoryRepository.deleteByMemberId(id)
 
-	@Transactional
-	fun deleteByMemberId(id: Long) = searchHistoryRepository.deleteByMemberId(id)
-
-	fun deleteById(id: Long) = searchHistoryRepository.deleteById(id)
+    fun deleteById(id: Long) = searchHistoryRepository.deleteById(id)
 }

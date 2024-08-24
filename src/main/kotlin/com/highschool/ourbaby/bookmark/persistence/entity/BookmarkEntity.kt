@@ -10,15 +10,13 @@ import jakarta.persistence.GenerationType.IDENTITY
 @Entity
 @Table(name = "bookmark")
 class BookmarkEntity(
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	val id: Long = 0,
-
-	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "article_id")
-	val article: ArticleEntity,
-
-	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "member_id")
-	val member: MemberEntity,
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    val id: Long = 0,
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "article_id")
+    val article: ArticleEntity,
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "member_id")
+    val member: MemberEntity,
 ) : BaseEntity()

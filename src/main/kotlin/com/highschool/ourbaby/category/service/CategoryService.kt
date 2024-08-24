@@ -7,26 +7,29 @@ import kotlin.jvm.optionals.getOrNull
 
 @Service
 class CategoryService(
-	private val categoryRepository: CategoryRepository,
+    private val categoryRepository: CategoryRepository,
 ) {
+    fun getAllCategories(): List<CategoryEntity> = categoryRepository.findAll()
 
-	fun getAllCategories(): List<CategoryEntity> = categoryRepository.findAll()
+    fun getCategoryById(id: Long) =
+        categoryRepository.findById(id).getOrNull()
+            ?: throw NoSuchElementException("No Category with id $id")
 
-	fun getCategoryById(id: Long) =
-		categoryRepository.findById(id).getOrNull() ?: throw NoSuchElementException("No Category with id $id")
+    fun createCategory(incomingTag: CategoryEntity) = categoryRepository.save(incomingTag)
 
-	fun createCategory(incomingTag: CategoryEntity) = categoryRepository.save(incomingTag)
+    fun updateCategory(
+        id: Long,
+        incoming: CategoryEntity,
+    ): CategoryEntity {
+        val origin = getCategoryById(id)
+        val update =
+            CategoryEntity(
+                id = origin.id,
+                name = incoming.name,
+            )
+        update.createdAt = origin.createdAt
+        return categoryRepository.save(update)
+    }
 
-	fun updateCategory(id: Long, incoming: CategoryEntity): CategoryEntity {
-		val origin = getCategoryById(id)
-		val update = CategoryEntity(
-			id = origin.id,
-			name = incoming.name,
-		)
-		update.createdAt = origin.createdAt
-		return categoryRepository.save(update)
-	}
-
-	fun deleteCategory(id: Long) = categoryRepository.deleteById(id)
-
+    fun deleteCategory(id: Long) = categoryRepository.deleteById(id)
 }

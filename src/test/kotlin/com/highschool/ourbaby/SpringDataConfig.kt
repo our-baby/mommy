@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @EntityScan(basePackages = ["com.highschool.ourbaby"])
 @EnableJpaRepositories(basePackages = ["com.highschool.ourbaby"])
-class SpringDataConfig: AbstractProjectConfig() {
-	override fun extensions() = listOf(SpringTestExtension(SpringTestLifecycleMode.Root))
+class SpringDataConfig : AbstractProjectConfig() {
+    override fun extensions() = listOf(SpringTestExtension(SpringTestLifecycleMode.Root))
 }

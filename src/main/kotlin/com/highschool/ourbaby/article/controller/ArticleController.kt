@@ -19,67 +19,68 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/articles")
 class ArticleController(
-	private val categoryService: CategoryService,
-	private val articleService: ArticleService,
+    private val categoryService: CategoryService,
+    private val articleService: ArticleService,
 ) {
+    @GetMapping
+    fun getAllArticles(pageable: Pageable): Page<ArticleResponseDto> =
+        articleService.getAllArticles(pageable).map { ArticleResponseDto(it) }
 
-	@GetMapping
-	fun getAllArticles(pageable: Pageable): Page<ArticleResponseDto> =
-		articleService.getAllArticles(pageable).map { ArticleResponseDto(it) }
+    @GetMapping("/{id}")
+    fun getArticleById(
+        @PathVariable(value = "id", required = true) id: Long,
+    ) = ArticleResponseDto(articleService.getArticleById(id))
 
+    @GetMapping("/categories/{id}")
+    fun getArticlesByCategoryId(
+        @PathVariable(value = "id", required = true) id: Long,
+        pageable: Pageable,
+    ): Page<ArticleResponseDto> = articleService.getArticlesByCategoryId(id, pageable).map { ArticleResponseDto(it) }
 
-	@GetMapping("/{id}")
-	fun getArticleById(@PathVariable(value = "id", required = true) id: Long) =
-		ArticleResponseDto(articleService.getArticleById(id))
+    @PostMapping
+    fun createArticle(
+        @RequestBody articleRequestDto: ArticleRequestDto,
+    ): ArticleResponseDto {
+        articleRequestDto.categoryId ?: throw BadRequestException("No categoryId")
+        val cateogry = categoryService.getCategoryById(articleRequestDto.categoryId)
+        return ArticleResponseDto(
+            articleService.createArticle(
+                articleRequestDto.title,
+                articleRequestDto.summary,
+                articleRequestDto.link,
+                articleRequestDto.hits,
+                articleRequestDto.linkHits,
+                articleRequestDto.isPublished,
+                cateogry,
+            ),
+        )
+    }
 
-	@GetMapping("/categories/{id}")
-	fun getArticlesByCategoryId(
-		@PathVariable(value = "id", required = true) id: Long,
-		pageable: Pageable
-	): Page<ArticleResponseDto> =
-		articleService.getArticlesByCategoryId(id, pageable).map { ArticleResponseDto(it) }
+    @PutMapping("/{id}")
+    fun updateArticle(
+        @PathVariable(value = "id", required = true) id: Long,
+        @RequestBody articleRequestDto: ArticleRequestDto,
+    ): ArticleResponseDto {
+        val category =
+            articleRequestDto.categoryId?.let {
+                categoryService.getCategoryById(articleRequestDto.categoryId)
+            }
+        return ArticleResponseDto(
+            articleService.updateArticle(
+                id,
+                articleRequestDto.title,
+                articleRequestDto.summary,
+                articleRequestDto.link,
+                articleRequestDto.hits,
+                articleRequestDto.linkHits,
+                articleRequestDto.isPublished,
+                category,
+            ),
+        )
+    }
 
-
-	@PostMapping
-	fun createArticle(@RequestBody articleRequestDto: ArticleRequestDto): ArticleResponseDto {
-		articleRequestDto.categoryId ?: throw BadRequestException("No categoryId")
-		val cateogry = categoryService.getCategoryById(articleRequestDto.categoryId)
-		return ArticleResponseDto(
-			articleService.createArticle(
-				articleRequestDto.title,
-				articleRequestDto.summary,
-				articleRequestDto.link,
-				articleRequestDto.hits,
-				articleRequestDto.linkHits,
-				articleRequestDto.isPublished,
-				cateogry,
-			)
-		)
-	}
-
-	@PutMapping("/{id}")
-	fun updateArticle(
-		@PathVariable(value = "id", required = true) id: Long,
-		@RequestBody articleRequestDto: ArticleRequestDto
-	): ArticleResponseDto {
-		val category = articleRequestDto.categoryId?.let {
-			categoryService.getCategoryById(articleRequestDto.categoryId)
-		}
-		return ArticleResponseDto(
-			articleService.updateArticle(
-				id,
-				articleRequestDto.title,
-				articleRequestDto.summary,
-				articleRequestDto.link,
-				articleRequestDto.hits,
-				articleRequestDto.linkHits,
-				articleRequestDto.isPublished,
-				category
-			)
-		)
-	}
-
-
-	@DeleteMapping("/{id}")
-	fun deleteArticle(@PathVariable(value = "id", required = true) id: Long) = articleService.deleteArticle(id)
+    @DeleteMapping("/{id}")
+    fun deleteArticle(
+        @PathVariable(value = "id", required = true) id: Long,
+    ) = articleService.deleteArticle(id)
 }

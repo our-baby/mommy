@@ -16,22 +16,26 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/memberProvisions")
 class MemberProvisionController(
-	private val memberProvisionService: MemberProvisionService,
+    private val memberProvisionService: MemberProvisionService,
 ) {
-	@GetMapping("/{id}")
-	fun getProvisionsByMemberId(@PathVariable id: Long) =
-		memberProvisionService.getProvisionsByMemberId(id).map { ProvisionResponseDto(it) }
+    @GetMapping("/{id}")
+    fun getProvisionsByMemberId(
+        @PathVariable id: Long,
+    ) = memberProvisionService.getProvisionsByMemberId(id).map { ProvisionResponseDto(it) }
 
-	@PostMapping
-	fun createMemberProvision(@RequestBody memberProvisionRequestDto: MemberProvisionRequestDto) =
-		MemberProvisionResponseDto(
-			memberProvisionService.createMemberProvision(
-				memberProvisionRequestDto.memberId,
-				memberProvisionRequestDto.provisionId
-			)
-		)
+    @PostMapping
+    fun createMemberProvision(
+        @RequestBody memberProvisionRequestDto: MemberProvisionRequestDto,
+    ) = MemberProvisionResponseDto(
+        memberProvisionService.createMemberProvision(
+            memberProvisionRequestDto.memberId,
+            memberProvisionRequestDto.provisionId,
+        ),
+    )
 
-	@DeleteMapping
-	fun deleteMemberProvision(@RequestParam memberId: Long, @RequestParam provisionId: Long) =
-		memberProvisionService.deleteMemberProvision(memberId, provisionId)
+    @DeleteMapping
+    fun deleteMemberProvision(
+        @RequestParam memberId: Long,
+        @RequestParam provisionId: Long,
+    ) = memberProvisionService.deleteMemberProvision(memberId, provisionId)
 }
