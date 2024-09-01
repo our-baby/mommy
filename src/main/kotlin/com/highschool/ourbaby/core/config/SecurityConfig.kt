@@ -1,5 +1,6 @@
 package com.highschool.ourbaby.core.config
 
+import com.highschool.ourbaby.core.filter.ExceptionHandlerFilter
 import com.highschool.ourbaby.core.filter.OurBabyJwtFilter
 import com.highschool.ourbaby.member.service.JwtService
 import com.highschool.ourbaby.member.service.MemberService
@@ -31,10 +32,14 @@ class SecurityConfig(
                 it.requestMatchers("/api/members/sign-in").permitAll()
                 it.anyRequest().permitAll()
             }.addFilterAfter(ourBabyJwtFilter(), LogoutFilter::class.java)
+            .addFilterBefore(exceptionHandlerFilter(), OurBabyJwtFilter::class.java)
 
         return http.build()
     }
 
     @Bean
     fun ourBabyJwtFilter() = OurBabyJwtFilter(jwtService, memberService)
+
+    @Bean
+    fun exceptionHandlerFilter() = ExceptionHandlerFilter()
 }

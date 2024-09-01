@@ -1,6 +1,7 @@
 package com.highschool.ourbaby.member.service
 
 import com.highschool.ourbaby.core.config.JwtConfig
+import com.highschool.ourbaby.core.exception.TokenInvalidException
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
@@ -63,6 +64,6 @@ class JwtService(
                 .build()
                 .parseSignedClaims(token.replace("Bearer ", ""))
                 .payload
-        }.getOrElse { throw IllegalStateException("유효하지 않은 토큰입니다.") }
+        }.getOrElse { throw TokenInvalidException("유효하지 않은 토큰입니다.") }
     }
 }
