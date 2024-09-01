@@ -206,7 +206,6 @@ class DataLoaderConfig(
         }
         val memberList =
             List(2) {
-                // Generate a list of 10 mock members
                 MemberEntity(
                     email = faker.internet.email(),
                     name = faker.name.name(),
@@ -244,7 +243,7 @@ class DataLoaderConfig(
             return
         }
         val memberList = memberRepository.findAll()
-        val provision = provisionRepository.findAll().get(0) ?: throw NoSuchElementException("존재하지 않는 카테고리입니다.")
+        val provision = provisionRepository.findAll().getOrNull(0) ?: throw NoSuchElementException("존재하지 않는 정책입니다.")
         val memberProvisionList = memberList.map { it -> MemberProvisionEntity(member = it, provision = provision) }
         memberProvisionRepository.saveAll(memberProvisionList)
     }
